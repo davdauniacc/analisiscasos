@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Análisis de Casos - Herramienta de aprendizaje accesible</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+    
+    /* Mejoras de accesibilidad WCAG 2.1 AA */
+    *{box-sizing:border-box;margin:0;padding:0}
+    
+    :root {
+      --blue:#2c66ff;
+      --yellow:#eab308;
+      --pink:#ff01ff;
+      --dark:#2d2f36;
+      --dark-text:#1e1e24;
+      --light:#f8f9fc;
+      --ok:#00a859;
+      --err:#e62525;
+      --radius:14px;
+      /* Colores con mejor contraste WCAG AA */
+      --blue-contrast:#1a4fd6;
+      --yellow-contrast:#d4a000;
+      --pink-contrast:#cc00cc;
+    }
+    
+    body { 
+      background: #eef2f5; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      padding: 20px; 
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.5;
+    }
+    
+    /* Skip to content link para accesibilidad */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--blue);
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      z-index: 100;
+      border-radius: 0 0 4px 0;
+      font-weight: 600;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+      outline: 3px solid var(--yellow);
+    }
+    
+    #game{
+      font-family:'Montserrat',sans-serif;
+      background:var(--light);
+      min-height:580px;
+      max-width: 800px;
+      width: 100%;
+      border-radius:var(--radius);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    }
+    
+    .topbar{
+      background:var(--blue);
+      padding:12px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      /* Asegurar contraste WCAG AA */
+      color: #ffffff;
+    }
+    
+    .topbar .title{
+      color:#fff;
+      font-weight:700;
+      font-size:14px;
+      letter-spacing:.5px;
+    }
+    
+    .progress-dots{
+      display:flex;
+      gap:8px;
+    }
+    
+    .dot{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:rgba(255,255,255,.4);
+      transition:.3s;
+      cursor:pointer;
+      /* Mejora de enfoque */
+      transition: all 0.2s ease;
+    }
+    
+    .dot:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 2px;
+      transform: scale(1.3);
+    }
+    
+    .dot.done{
+      background:rgba(255,255,255,.8);
+    }
+    
+    .dot.active{
+      background:var(--yellow);
+      transform: scale(1.2);
+    }
+    
+    .scene{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      padding:24px;
+      gap:16px;
+      animation:fadeIn .35s ease;
+    }
+    
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    
+    .scene-label{
+      font-size:11px;
+      font-weight:700;
+      color:var(--blue-contrast);
+      letter-spacing:1px;
+      text-transform:none;
+      margin-bottom: -6px;
+    }
+    
+    /* Mejora de contraste en burbujas */
+    .bubble{
+      border-radius:18px;
+      padding:12px 18px;
+      font-size:14px;
+      line-height:1.5;
+      max-width:90%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    
+    .bubble.p1{
+      background:var(--blue);
+      color:#fff;
+      align-self:flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .bubble.p2{
+      background:var(--yellow-contrast);
+      color:#1a1a1a;
+      align-self:flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .bubble.narr{
+      background:#fff;
+      color:var(--dark-text);
+      border:1.5px solid #e2e8f0;
+      align-self:center;
+      max-width:100%;
+      text-align:center;
+    }
+    
+    .bubble.info{
+      background:#fff;
+      color:var(--dark-text);
+      border-left:5px solid var(--blue-contrast);
+      border-radius:0 16px 16px 0;
+      font-size:13px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    .char-row{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+    }
+    
+    .char-row.right{
+      flex-direction:row-reverse;
+    }
+    
+    .char-col{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      flex-shrink:0;
+    }
+    
+    .avatar{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:26px;
+      border:3px solid transparent;
+      flex-shrink:0;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    .av1{
+      background:#e0e7ff;
+      border-color:var(--blue);
+    }
+    
+    .av2{
+      background:#fef9e3;
+      border-color:var(--yellow-contrast);
+    }
+    
+    .av3{
+      background:#ffe4ff;
+      border-color:var(--pink-contrast);
+    }
+    
+    .char-name{
+      font-size:11px;
+      font-weight:600;
+      color:var(--dark-text);
+      opacity:.8;
+    }
+    
+    .opts{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    
+    .opt-btn{
+      background:#fff;
+      border:2px solid #e2e8f0;
+      border-radius:12px;
+      padding:12px 16px;
+      font-family:'Montserrat',sans-serif;
+      font-size:13px;
+      font-weight:500;
+      color:var(--dark-text);
+      cursor:pointer;
+      text-align:left;
+      transition:.2s;
+      line-height:1.4;
+    }
+    
+    .opt-btn:hover:not(:disabled){
+      border-color:var(--blue);
+      background:#f0f5ff;
+    }
+    
+    .opt-btn:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      border-color: var(--blue);
+    }
+    
+    .opt-btn.correct{
+      border-color:var(--ok);
+      background:#e6f9f0;
+      color:var(--ok);
+    }
+    
+    .opt-btn.wrong{
+      border-color:var(--err);
+      background:#fde8e8;
+      color:var(--err);
+      text-decoration: line-through;
+    }
+    
+    .fb{
+      border-radius:12px;
+      padding:14px 18px;
+      font-size:13px;
+      font-weight:500;
+      text-align:center;
+      display:none;
+      margin-top: 6px;
+    }
+    
+    .fb.ok{
+      background:#e6f9f0;
+      color:var(--ok);
+      display:block;
+      border-left: 4px solid var(--ok);
+    }
+    
+    .fb.err{
+      background:#fde8e8;
+      color:var(--err);
+      display:block;
+      border-left: 4px solid var(--err);
+    }
+    
+    .q-title{
+      font-size:15px;
+      font-weight:700;
+      color:var(--dark-text);
+      line-height:1.45;
+      margin: 4px 0;
+    }
+    
+    .step-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    
+    .step-card{
+      background:#fff;
+      border:2px solid #e2e8f0;
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13px;
+      font-weight:500;
+      color:var(--dark-text);
+      cursor:grab;
+      text-align:center;
+      transition:.2s;
+      user-select:none;
+    }
+    
+    .step-card:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+    
+    .step-card:active{
+      cursor:grabbing;
+    }
+    
+    .step-card:hover{
+      border-color:var(--blue);
+      background:#f0f5ff;
+    }
+    
+    .drop-zones{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top: 6px;
+    }
+    
+    .drop-zone{
+      background:#f1f5f9;
+      border:2px dashed #94a3b8;
+      border-radius:14px;
+      padding:10px 14px;
+      font-size:13px;
+      color:#475569;
+      text-align:center;
+      min-height:52px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:.2s;
+    }
+    
+    .drop-zone:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+    
+    .drop-zone.filled{
+      border-style:solid;
+      border-color:var(--ok);
+      background:#e6f9f0;
+      color:var(--ok);
+      font-weight:600;
+    }
+    
+    .drop-zone.drag-over{
+      border-color:var(--blue);
+      background:#eef2ff;
+    }
+    
+    .struct-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    
+    .struct-item{
+      background:#fff;
+      border:1.5px solid #e2e8f0;
+      border-radius:16px;
+      overflow:hidden;
+    }
+    
+    .struct-header{
+      padding:14px 18px;
+      font-size:14px;
+      font-weight:700;
+      color:var(--blue-contrast);
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      transition:.2s;
+    }
+    
+    .struct-header:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      background: #f0f5ff;
+    }
+    
+    .struct-header:hover{
+      background:#f8fafc;
+    }
+    
+    .struct-body{
+      display:none;
+      padding:16px 18px;
+      font-size:13px;
+      color:var(--dark-text);
+      line-height:1.55;
+      border-top:1px solid #e2e8f0;
+      background: #fefefe;
+    }
+    
+    .struct-body.open{
+      display:block;
+    }
+    
+    .nav-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 24px 20px;
+      gap:12px;
+      background: white;
+      border-top: 1px solid #eef2f5;
+    }
+    
+    .nav-center{
+      font-size:12px;
+      font-weight:600;
+      color:var(--dark-text);
+      opacity:.6;
+    }
+    
+    .btn{
+      padding:10px 24px;
+      border-radius:40px;
+      border:none;
+      font-family:'Montserrat',sans-serif;
+      font-size:13px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s;
+    }
+    
+    .btn-main{
+      background:var(--blue);
+      color:#fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .btn-main:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      background: var(--blue-contrast);
+    }
+    
+    .btn-main:hover:not(:disabled){
+      background:var(--blue-contrast);
+      transform: translateY(-1px);
+    }
+    
+    .btn-main:disabled{
+      background:#cbd5e1;
+      color:#64748b;
+      cursor:not-allowed;
+    }
+    
+    .btn-back{
+      background:#fff;
+      color:var(--dark-text);
+      border:1.5px solid #cbd5e1;
+    }
+    
+    .btn-back:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      border-color: var(--blue);
+    }
+    
+    .btn-back:hover:not(:disabled){
+      background:#f1f5f9;
+      border-color:#94a3b8;
+    }
+    
+    .btn-back:disabled{
+      opacity:.4;
+      cursor:not-allowed;
+    }
+    
+    .tag{
+      display:inline-block;
+      background:var(--blue);
+      color:#fff;
+      border-radius:30px;
+      padding:2px 10px;
+      font-size:10px;
+      font-weight:700;
+      margin-right:10px;
+    }
+    
+    .steps-label{
+      font-size:12px;
+      font-weight:600;
+      color:var(--dark-text);
+      opacity:.7;
+      margin-bottom:6px;
+    }
+    
+    .finish-screen{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      padding:40px 24px;
+      text-align:center;
+      animation:fadeIn .4s ease;
+    }
+    
+    .finish-icon{
+      font-size:64px;
+    }
+    
+    .finish-title{
+      font-size:24px;
+      font-weight:800;
+      color:var(--blue);
+    }
+    
+    .finish-sub{
+      font-size:14px;
+      color:var(--dark-text);
+      line-height:1.6;
+      max-width:360px;
+    }
+    
+    .audio-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:#fff;
+      border:1.5px solid #cbd5e1;
+      border-radius:40px;
+      padding:6px 16px;
+      font-family:'Montserrat',sans-serif;
+      font-size:12px;
+      font-weight:600;
+      color:var(--dark-text);
+      cursor:pointer;
+      transition:.2s;
+      margin-bottom:4px;
+      align-self:flex-start;
+    }
+    
+    .audio-btn:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+    
+    .audio-btn:hover{
+      border-color:var(--blue);
+      color:var(--blue);
+      background:#f0f5ff;
+    }
+    
+    .audio-btn.playing{
+      border-color:var(--ok);
+      color:var(--ok);
+      background:#e6f9f0;
+    }
+    
+    [role="status"] { 
+      font-size: 12px; 
+      margin-top: 8px; 
+      text-align: center; 
+    }
+    
+    @media (max-width: 550px) {
+      .scene { padding: 16px; gap: 12px; }
+      .bubble { font-size: 12.5px; }
+      .avatar { width: 46px; height: 46px; font-size: 22px; }
+    }
+    
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      min-height: 58px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    
+    .checklist-item:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .checklist-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    
+    .checklist-item input {
+      margin-top: 2px;
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .checklist-item input:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+    
+    /* Estilos para la actividad de completar */
+    .drop-zone-blank {
+      transition: all 0.2s ease;
+    }
+    
+    .drop-zone-blank:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+    
+    .drop-zone-blank.drag-over {
+      background: #eef2ff !important;
+      border-color: var(--blue) !important;
+    }
+    
+    [draggable="true"] {
+      user-select: none;
+      cursor: grab;
+    }
+    
+    [draggable="true"]:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+    
+    [draggable="true"]:active {
+      cursor: grabbing;
+    }
+    
+    /* Mejoras para lectores de pantalla */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    /* Indicador de enfoque visible */
+    :focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Skip to content link para accesibilidad -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+  
+<div id="game" role="main" aria-label="Juego interactivo: Cómo analizar un caso">
+  <div class="topbar">
+    <span class="title">¿Cómo se analiza un caso?</span>
+    <div class="progress-dots" id="dots" aria-label="Progreso de los pasos del análisis de casos"></div>
+  </div>
+  <div id="content" style="flex:1;display:flex;flex-direction:column" role="region" aria-live="polite" id="main-content" tabindex="-1"></div>
+  <div class="nav-row">
+    <button class="btn btn-back" id="prevBtn" aria-label="Paso anterior">← Anterior</button>
+    <span class="nav-center" id="navLabel" aria-live="polite">1 / 12</span>
+    <button class="btn btn-main" id="nextBtn" aria-label="Paso siguiente">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+// Hacer las funciones globales asignándolas a window
+window.sceneState = {};
+
+const TOTAL = 12;
+let current = 0;
+let synth = window.speechSynthesis;
+let isPlaying = false;
+let selectedVoice = null;
+
+const AUDIO = [
+  "La evaluación de esta unidad consistirá en un análisis de caso. ¡Vamos a analizarlo!",
+  "Actividad: ¿Por dónde comenzamos?...",
+  "Paso uno: establecer un objetivo...",
+  "Paso dos: leer el caso...",
+  "Paso tres: conectar el caso con los contenidos...",
+  "Actividad: ordena los pasos...",
+  "Paso cuatro: estructura del análisis...",
+  "Actividad: arma el análisis de casos...",
+  "Paso cinco: revisión final...",
+  "Actividad: practica cómo construir referencias en formato APA...",
+  "¡Felicitaciones! Completaste el recorrido para analizar un caso. ¡Muy bien hecho!",
+  "Para finalizar, te presentamos las referencias bibliográficas utilizadas en este recurso educativo."
+];
+
+function getBestVoice() {
+  const voices = synth.getVoices();
+  const voicePriority = [
+    (v) => v.name === 'Google español de Estados Unidos' || v.name === 'Google US Spanish',
+    (v) => v.name === 'Google español',
+    (v) => v.lang === 'es-419' || v.lang === 'es-MX' || v.lang === 'es-CO' || v.lang === 'es-AR' || v.lang === 'es-CL',
+    (v) => v.name === 'Mónica' || v.name === 'Paulina' || v.name === 'Jorge',
+    (v) => v.name.includes('Microsoft') && v.lang.startsWith('es'),
+    (v) => v.lang.startsWith('es')
+  ];
+  for (const condition of voicePriority) {
+    const voice = voices.find(condition);
+    if (voice) return voice;
+  }
+  return null;
+}
+
+function loadBestVoice() {
+  if (!synth) return;
+  const setVoice = () => {
+    const best = getBestVoice();
+    if (best) selectedVoice = best;
+  };
+  if (synth.getVoices().length > 0) setVoice();
+  else synth.onvoiceschanged = setVoice;
+}
+loadBestVoice();
+
+function speak(text){
+  if(!synth) return;
+  synth.cancel();
+  isPlaying = false;
+  updateAudioBtns();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'es-419';
+  utterance.rate = 1.08;
+  utterance.pitch = 1.02;
+  utterance.volume = 1;
+  utterance.voice = selectedVoice || (synth.getVoices().find(v => v.lang.startsWith('es')));
+  utterance.onstart = () => { isPlaying = true; updateAudioBtns(); };
+  utterance.onend = () => { isPlaying = false; updateAudioBtns(); };
+  utterance.onerror = () => { isPlaying = false; updateAudioBtns(); };
+  synth.speak(utterance);
+}
+function stopAudio(){ if(synth) { synth.cancel(); isPlaying = false; updateAudioBtns(); } }
+function toggleAudio(){ isPlaying ? stopAudio() : speak(AUDIO[current]); }
+
+function updateAudioBtns(){
+  document.querySelectorAll('.audio-btn').forEach(b => {
+    if(isPlaying){ 
+      b.classList.add('playing'); 
+      b.innerHTML = '🔊 Pausar'; 
+      b.setAttribute('aria-label', 'Pausar audio explicativo');
+      b.setAttribute('aria-pressed', 'true');
+    } else { 
+      b.classList.remove('playing'); 
+      b.innerHTML = '🔈 Escuchar'; 
+      b.setAttribute('aria-label', 'Escuchar explicación del paso actual');
+      b.setAttribute('aria-pressed', 'false');
+    }
+  });
+}
+function audioBtn(){ return `<button class="audio-btn" onclick="window.toggleAudio()" aria-label="Escuchar explicación del paso actual" aria-pressed="false">🔈 Escuchar</button>`; }
+
+function dots(){
+  const d=document.getElementById('dots'); 
+  d.innerHTML='';
+  for(let i=0;i<TOTAL;i++){
+    const s=document.createElement('button');
+    s.className='dot'+(i<current?' done':i===current?' active':'');
+    s.setAttribute('aria-label', `Ir al paso ${i+1} de ${TOTAL}`);
+    s.setAttribute('aria-current', i===current ? 'step' : 'false');
+    s.onclick=()=>goTo(i);
+    d.appendChild(s);
+  }
+  document.getElementById('navLabel').textContent=(current+1)+' / '+TOTAL;
+  document.getElementById('prevBtn').disabled=current===0;
+  const nb=document.getElementById('nextBtn');
+  nb.style.display = (current===TOTAL-1) ? 'none' : '';
+  nb.disabled = false;
+}
+
+// FUNCIONES DE NAVEGACIÓN GLOBALES
+window.goTo = function(idx){
+  if(idx === current) return;
+  stopAudio(); 
+  current = idx; 
+  dots(); 
+  document.getElementById('content').innerHTML = scenes[current]();
+  // Anunciar cambio de paso para lectores de pantalla
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.setAttribute('aria-live', 'polite');
+  announcement.textContent = `Paso ${current+1} de ${TOTAL}`;
+  announcement.style.position = 'absolute';
+  announcement.style.width = '1px';
+  announcement.style.height = '1px';
+  announcement.style.padding = '0';
+  announcement.style.margin = '-1px';
+  announcement.style.overflow = 'hidden';
+  document.body.appendChild(announcement);
+  setTimeout(() => announcement.remove(), 3000);
+}
+
+window.advance = function(){ 
+  if(current < TOTAL-1){ 
+    stopAudio(); 
+    current++; 
+    dots(); 
+    document.getElementById('content').innerHTML = scenes[current](); 
+    // Anunciar cambio de paso
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.textContent = `Avanzando al paso ${current+1} de ${TOTAL}`;
+    announcement.style.position = 'absolute';
+    announcement.style.width = '1px';
+    announcement.style.height = '1px';
+    announcement.style.padding = '0';
+    announcement.style.margin = '-1px';
+    announcement.style.overflow = 'hidden';
+    document.body.appendChild(announcement);
+    setTimeout(() => announcement.remove(), 3000);
+  } 
+}
+
+window.goBack = function(){ 
+  if(current > 0){ 
+    stopAudio(); 
+    current--; 
+    dots(); 
+    document.getElementById('content').innerHTML = scenes[current](); 
+    // Anunciar cambio de paso
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.textContent = `Retrocediendo al paso ${current+1} de ${TOTAL}`;
+    announcement.style.position = 'absolute';
+    announcement.style.width = '1px';
+    announcement.style.height = '1px';
+    announcement.style.padding = '0';
+    announcement.style.margin = '-1px';
+    announcement.style.overflow = 'hidden';
+    document.body.appendChild(announcement);
+    setTimeout(() => announcement.remove(), 3000);
+  } 
+}
+
+// Asignar eventos a los botones
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('prevBtn').onclick = function() { window.goBack(); };
+  document.getElementById('nextBtn').onclick = function() { window.advance(); };
+  
+  // Enfoque en el contenido principal después de cargar
+  const mainContent = document.getElementById('content');
+  if(mainContent) mainContent.focus();
+});
+
+// ------------------------- RENDER ESCENAS ---------------------------------
+function render1(){
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="char-row">
+      <div class="char-col"><div class="avatar av1" aria-label="Avatar del profesor">🧑‍💼</div><div class="char-name">Profesor</div></div>
+      <div class="bubble p1" style="flex:1">La evaluación de esta unidad consistirá en un análisis de caso.</div>
+    </div>
+    <div class="char-row right">
+      <div class="char-col"><div class="avatar av2" aria-label="Avatar de Patricia">👩‍🎓</div><div class="char-name">Patricia</div></div>
+      <div class="bubble p2" style="flex:1">¿Cómo lo hago?</div>
+    </div>
+    <div class="char-row">
+      <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
+      <div class="bubble p1" style="flex:1; background: var(--pink);">Vamos paso a paso.</div>
+    </div>
+  </div>`;
+}
+
+function render2(){
+  const done=window.sceneState.q2done, sel=window.sceneState.q2sel;
+  const opts=[
+    {t:'a) Definir los conceptos más relevantes.',v:'wrong', feedback: 'Definir conceptos es importante, pero no es lo primero. Primero debes orientarte con las instrucciones.'},
+    {t:'b) Hacer una crítica justificada con bibliografía.',v:'wrong', feedback: 'La crítica viene después del análisis. Lo esencial es entender qué pide la tarea.'},
+    {t:'c) Primero leer las instrucciones para saber qué debemos analizar, luego leer atentamente el caso.',v:'correct', feedback: '¡Exacto! Las instrucciones guían tu lectura y análisis.'},
+    {t:'d) Leer el caso atentamente, luego leer las instrucciones.',v:'wrong', feedback: 'Sin instrucciones claras puedes desviarte. Primero lee qué te piden.'},
+  ];
+  const btns=opts.map((o,i)=>{
+    let cls='opt-btn';
+    if(done){
+      if(i===sel && o.v==='correct') cls+=' correct';
+      else if(i===sel && o.v==='wrong') cls+=' wrong';
+      else if(o.v==='correct') cls+=' correct';
+    }
+    return `<button class="${cls}" onclick="window.checkQ(${i})" ${done?'disabled':''} aria-label="Opción ${o.t}">${o.t}</button>`;
+  }).join('');
+  
+  let fb='';
+  let resetBtn='';
+  
+  if(done){
+    const correcta = window.sceneState.q2correct;
+    const msg = correcta ? '✓ ¡Correcto! Primero hay que leer el caso con atención y orientación.' : `✗ Incorrecto. ${opts[window.sceneState.q2sel].feedback}`;
+    fb = `<div class="fb ${correcta ? 'ok' : 'err'}" role="alert">${msg}</div>`;
+    
+    if(!correcta){
+      resetBtn = `<div style="text-align: center; margin-top: 12px;"><button onclick="window.resetActivity2()" class="btn" style="background: #e62525; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 700;" aria-label="Reiniciar actividad, volver a intentar la pregunta">🔄 Volver a intentar</button></div>`;
+    }
+  }
+  
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="scene-label">Actividad: ¿Por dónde comenzamos?</div>
+    <div class="q-title">¿Qué es lo primero que debemos hacer cuando tenemos que analizar un caso?</div>
+    <div class="opts">${btns}</div>
+    ${fb}
+    ${resetBtn}
+  </div>`;
+}
+
+window.checkQ = function(i){
+  if(window.sceneState.q2done) return;
+  window.sceneState.q2done=true; window.sceneState.q2sel=i; window.sceneState.q2correct=(i===2);
+  dots(); document.getElementById('content').innerHTML=render2();
+  const msg = window.sceneState.q2correct ? "Respuesta correcta. Puedes continuar." : "Respuesta incorrecta. Revisa la retroalimentación.";
+  const statusDiv = document.createElement('div');
+  statusDiv.setAttribute('role', 'status');
+  statusDiv.setAttribute('aria-live', 'polite');
+  statusDiv.textContent = msg;
+  document.getElementById('content').appendChild(statusDiv);
+  setTimeout(() => statusDiv.remove(), 3000);
+}
+
+window.resetActivity2 = function() {
+  window.sceneState.q2done = false;
+  window.sceneState.q2sel = null;
+  window.sceneState.q2correct = false;
+  document.getElementById('content').innerHTML = render2();
+  const statusDiv = document.createElement('div');
+  statusDiv.setAttribute('role', 'status');
+  statusDiv.textContent = "Actividad reiniciada. Puedes volver a intentar la pregunta.";
+  statusDiv.style.position = 'absolute';
+  statusDiv.style.width = '1px';
+  statusDiv.style.height = '1px';
+  statusDiv.style.padding = '0';
+  statusDiv.style.margin = '-1px';
+  statusDiv.style.overflow = 'hidden';
+  document.body.appendChild(statusDiv);
+  setTimeout(() => statusDiv.remove(), 3000);
+}
+
+function render3(){
+  const ejemploVisible = window.sceneState.ejemploObjetivoVisible || false;
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="bubble narr"><strong>📌 Paso 1:</strong> Establece un objetivo leyendo atentamente las instrucciones de la evaluación.</div>
+    <div class="bubble info">Responde: <strong>¿Qué debo analizar?</strong> ¿Con qué contenidos de la unidad se conectan estas actividades?</div>
+    <div class="char-row" style="margin-top: 4px; align-items: center;">
+      <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
+      <div class="bubble p1" style="background: var(--pink); flex: 1; display: flex; justify-content: space-between; align-items: center;">
+        <span>📘 ¡Te ayudo con un ejemplo!</span>
+        <button onclick="window.toggleEjemploObjetivo()" style="background: white; border: none; border-radius: 40px; padding: 4px 14px; font-size: 11px; font-weight: 600; color: var(--pink); cursor: pointer;" aria-label="${ejemploVisible ? 'Ocultar ejemplo' : 'Ver ejemplo de objetivo'}">${ejemploVisible ? 'Ocultar' : 'Ver ejemplo'}</button>
+      </div>
+    </div>
+    ${ejemploVisible ? `<div style="background: #f0f5ff; border-radius: 16px; padding: 16px; margin-top: 4px; border-left: 5px solid var(--pink);">
+      <div style="font-size: 12px; font-weight: 700; color: var(--pink); margin-bottom: 8px;">📋 Ejemplo - Instrucción de evaluación:</div>
+      <div style="background: white; border-radius: 12px; padding: 12px; font-size: 12px; color: #2d3a4a; margin-bottom: 12px; border: 1px solid #e2e8f0;">
+        "A partir del caso <strong>Empresa GreenFuture S.A.</strong>, analiza las decisiones estratégicas tomadas por la gerencia durante la crisis ambiental del año 2022. Relaciona tu análisis con los contenidos de la unidad sobre <strong>Ética empresarial</strong> y <strong>Responsabilidad social corporativa</strong>."
+      </div>
+      <div style="font-size: 12px; font-weight: 700; color: var(--pink); margin-bottom: 6px;">🎯 Objetivos propuestos:</div>
+<div style="background: white; border-radius: 12px; padding: 12px; font-size: 12px; border: 1px solid var(--pink);">
+  <div style="margin-bottom: 10px;">
+    <strong>¿Qué analizar?:</strong> Analizar las decisiones estratégicas de la gerencia de GreenFuture S.A. durante la crisis ambiental de 2022.
+  </div>
+  <div style="margin-bottom: 10px;">
+    <strong>¿Con qué contenido se relaciona?</strong> Identificar los principios de <strong>ética empresarial</strong> y <strong>responsabilidad social corporativa</strong> que se aplican en el caso.
+  </div>
+  <div>
+    <strong>¿Para qué sirve el análisis?</strong> Evaluar el impacto de dichas decisiones en la reputación y sostenibilidad de la empresa.
+  </div>
+</div>
+      <div style="background: #e6f9f0; border-radius: 12px; padding: 10px 14px; margin-top: 12px; border-left: 4px solid var(--ok); font-size: 11.5px; color: #1e4620;">
+        💡 <strong>Clave para un buen objetivo:</strong> debe responder <strong>qué</strong> analizar, <strong>con qué</strong> contenidos se relaciona y <strong>para qué</strong> sirve el análisis.
+      </div>
+    </div>` : ''}
+  </div>`;
+}
+window.toggleEjemploObjetivo = function() { window.sceneState.ejemploObjetivoVisible = !window.sceneState.ejemploObjetivoVisible; document.getElementById('content').innerHTML = render3(); }
+
+function render4(){
+  const tipsVisible = window.sceneState.tipsSintesisVisible || false;
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="bubble narr"><strong>📖 Paso 2:</strong> Lee caso y haz una síntesis.</div>
+    <div class="char-row"><div class="char-col"><div class="avatar av1" aria-label="Avatar del profesor">🧑‍💼</div><div class="char-name">Profesor</div></div><div class="bubble p1" style="flex:1">Lee con detalle, extrae lo más relevante.</div></div>
+    <div class="bubble info">Elabora una <strong>síntesis</strong> con los datos más relevantes para un análisis completo.</div>
+    <div class="char-row right" style="align-items: center;">
+      <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
+      <div class="bubble p2" style="background: var(--pink); flex:1; display: flex; justify-content: space-between;">
+        <span>📝 ¿Necesitas tips para sintetizar?</span>
+        <button onclick="window.toggleTipsSintesis()" style="background: white; border: none; border-radius: 40px; padding: 4px 14px; font-weight:600; color: var(--pink); cursor: pointer;" aria-label="${tipsVisible ? 'Ocultar tips de síntesis' : 'Ver tips para sintetizar'}">${tipsVisible ? 'Ocultar tips' : 'Ver tips'}</button>
+      </div>
+    </div>
+    ${tipsVisible ? `<div style="background: #fff8e7; border-radius: 16px; padding: 14px; margin-top: 8px; border-left: 5px solid var(--yellow);">
+      <div style="font-weight: 700; color: var(--yellow); margin-bottom: 12px;">💡 3 Tips para elaborar una síntesis de caso:</div>
+      <div style="background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid #eee;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="background: var(--yellow); color: var(--dark); width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">1</span>
+          <span style="font-weight: 600;">Identifica los hechos clave</span>
+        </div>
+        <div style="font-size: 11.5px; color: #555; margin-top: 6px; margin-left: 34px;">Extrae solo los datos esenciales: ¿quién?, ¿qué pasó?, ¿cuándo?, ¿dónde?, ¿cómo?, ¿por qué? 
+Ignora información decorativa o redundante.</div>
+      </div>
+      <div style="background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid #eee;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="background: var(--yellow); color: var(--dark); width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">2</span>
+          <span style="font-weight: 600;">Usa tus propias palabras</span>
+        </div>
+        <div style="font-size: 11.5px; color: #555; margin-top: 6px; margin-left: 34px;">Reescribe la información sin copiar textualmente. Esto te ayuda a comprender realmente el caso y a detectar lo que no entiendes.</div>
+      </div>
+      <div style="background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid #eee;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="background: var(--yellow); color: var(--dark); width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">3</span>
+          <span style="font-weight: 600;">Organiza en párrafos breves</span>
+        </div>
+        <div style="font-size: 11.5px; color: #555; margin-top: 6px; margin-left: 34px;">Separa la información en ideas claras: contexto → problema principal → actores involucrados → consecuencias → preguntas abiertas.</div>
+      </div>
+      <div style="font-size: 10px; color: #888; margin-top: 10px; text-align: right; border-top: 1px solid #eee; padding-top: 8px;">
+        ⚡ Una buena síntesis no supera una página. ¡Ve al grano!
+      </div>
+    </div>` : ''}
+    <div class="bubble info" style="border-left-color: var(--yellow);">💡 ¿Consideras que faltan datos en el caso? ¡Consulta con tu docente!</div>
+  </div>`;
+}
+window.toggleTipsSintesis = function() { window.sceneState.tipsSintesisVisible = !window.sceneState.tipsSintesisVisible; document.getElementById('content').innerHTML = render4(); }
+
+window.toggleAPAReminder = function() {
+  window.sceneState.showAPA = !window.sceneState.showAPA;
+  document.getElementById('content').innerHTML = render9();
+}
+window.toggleChecklistPanel = function() {
+  window.sceneState.showChecklist = !window.sceneState.showChecklist;
+  document.getElementById('content').innerHTML = render9();
+}
+
+function render5(){
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="bubble narr"><strong>🔗 Paso 3:</strong> Conecta el caso con los contenidos revisados en la unidad.</div>
+    <div class="bubble info">Relaciona la problemática con lo aprendido, identifica conceptos clave.</div>
+    <div class="char-row right">
+      <div class="char-col">
+        <div class="avatar av2" aria-label="Avatar de Patricia">👩‍🎓</div>
+        <div class="char-name">Patricia</div>
+      </div>
+      <div class="bubble p2">¿Qué conceptos se aplican? ¿Cómo se conectan?</div>
+    </div>
+    <div class="char-row">
+      <div class="char-col">
+        <div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div>
+        <div class="char-name">Alberto</div>
+      </div>
+      <div class="bubble p1" style="background: var(--pink); flex: 1;">💡 Una forma de poder conectar los conceptos de la unidad con el caso es utilizar <strong>mapas mentales</strong> y/o <strong>organizadores gráficos</strong>.</div>
+    </div>
+  </div>`;
+}
+
+const items6=["Establecer un objetivo para analizar el caso.","Leer el caso.","Realizar una síntesis con los detalles relevantes.","Conectar el caso con los contenidos de la unidad."];
+const shuf6=[2,0,3,1];
+let placed6=null, drag6=null;
+
+function render6(){
+  // Asegurar que placed6 esté sincronizado con sceneState
+  if(!window.sceneState.placed6) {
+    window.sceneState.placed6 = Array(4).fill(null);
+  }
+  placed6 = window.sceneState.placed6;
+  
+  const isP=idx=>placed6.includes(idx);
+  const cards=shuf6.map(idx=>`<div class="step-card" draggable="${!isP(idx)}" id="c6_${idx}" ondragstart="window.ds6(event,${idx})" ondragend="window.de6(event)" style="opacity:${isP(idx)?'.4':1}" tabindex="0" aria-label="Elemento: ${items6[idx]}, ${isP(idx) ? 'ya colocado' : 'arrastrable'}">${items6[idx]}</div>`).join('');
+  const zones=items6.map((_,i)=>{
+    const pi=placed6[i];
+    if(pi!==null) return `<div class="drop-zone filled" id="z6_${i}" aria-label="Posición ${i+1} ocupada por ${items6[pi]}"><span class="tag" aria-hidden="true">${i+1}</span>${items6[pi]}</div>`;
+    return `<div class="drop-zone" id="z6_${i}" ondragover="window.do6(event)" ondrop="window.dp6(event,${i})" ondragleave="window.dl6(event)" aria-label="Posición ${i+1}, espacio vacío, arrastra un paso aquí"><span class="tag" aria-hidden="true">${i+1}</span> Soltar aquí</div>`;
+  }).join('');
+  
+  let fb='';
+  let resetBtn='';
+  
+  if(window.sceneState.q6done){
+    fb=`<div class="fb ok" role="alert">✓ ¡Excelente! Ordenaste los pasos correctamente.</div>`;
+  } else if(window.sceneState.q6error){
+    fb=`<div class="fb err" role="alert">✗ Orden incorrecto. Puedes reiniciar la actividad para volver a intentarlo.</div>`;
+    resetBtn=`<div style="text-align: center; margin-top: 12px;"><button onclick="window.resetActivity6()" class="btn" style="background: #e62525; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 700;" aria-label="Reiniciar actividad de ordenar pasos">🔄 Reiniciar actividad</button></div>`;
+  }
+  
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="scene-label">Actividad: ordena los pasos del análisis</div>
+    <div class="steps-label">Arrastra cada paso al orden correcto</div>
+    <div class="step-grid">${cards}</div>
+    <div class="drop-zones">${zones}</div>
+    ${fb}
+    ${resetBtn}
+  </div>`;
+}
+
+window.resetActivity6 = function() {
+  // Reiniciar el estado en sceneState
+  window.sceneState.placed6 = Array(4).fill(null);
+  window.sceneState.q6done = false;
+  window.sceneState.q6error = false;
+  
+  // Sincronizar variable global placed6
+  placed6 = window.sceneState.placed6;
+  drag6 = null;
+  
+  // Refrescar la pantalla
+  document.getElementById('content').innerHTML = render6();
+  
+  // Mostrar mensaje de accesibilidad
+  const statusDiv = document.createElement('div');
+  statusDiv.setAttribute('role', 'status');
+  statusDiv.textContent = "Actividad reiniciada. Puedes volver a ordenar los pasos.";
+  statusDiv.style.position = 'absolute';
+  statusDiv.style.width = '1px';
+  statusDiv.style.height = '1px';
+  statusDiv.style.padding = '0';
+  statusDiv.style.margin = '-1px';
+  statusDiv.style.overflow = 'hidden';
+  document.body.appendChild(statusDiv);
+  setTimeout(() => statusDiv.remove(), 3000);
+}
+
+window.ds6 = function(e,idx){ if(placed6 && placed6.includes(idx)) { e.preventDefault(); return false; } drag6=idx; e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', idx); }
+window.de6 = function(e){ drag6=null; }
+window.do6 = function(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+window.dl6 = function(e){ e.currentTarget.classList.remove('drag-over'); }
+window.dp6 = function(e,zi){
+  e.preventDefault(); 
+  const zone=e.currentTarget; 
+  zone.classList.remove('drag-over');
+  if(drag6===null || (placed6[zi]!==null)) return;
+  if(placed6[zi] !== null) return;
+  
+  placed6[zi]=drag6;
+  window.sceneState.placed6 = [...placed6];  // Guardar en sceneState
+  
+  if(placed6.every(v=>v!==null)){
+    const ok=placed6.every((v,i)=>v===i);
+    if(ok){ 
+      window.sceneState.q6done=true; 
+      window.sceneState.q6error=false; 
+      dots(); 
+    } else { 
+      window.sceneState.q6error=true; 
+      window.sceneState.q6done=false; 
+      dots(); 
+    }
+  } else { 
+    window.sceneState.q6error=false; 
+  }
+  document.getElementById('content').innerHTML=render6();
+}
+
+// Estructura desplegable paso 4
+const struct7=[
+  {title:'Introducción',body:'Presenta tu trabajo, explica el problema que plantea el caso y cómo se abordará el análisis. Luego indica cómo se organiza el informe.'},
+  {title:'Perspectiva teórica/analítica',body:'Explica los enfoques y conceptos clave asociados al caso, como si le hablaras a alguien sin dominio del tema.'},
+  {title:'Análisis del caso',body:'Presenta un debate en relación con el caso: desglósalo, establece relaciones con los contenidos de la unidad y propón soluciones.'},
+  {title:'Conclusiones',body:'Cierra el informe verificando que se cumpla el objetivo planteado en la introducción. Destaca las ideas principales del análisis.'},
+  {title:'Bibliografía',body:'Incluye solo las referencias de artículos y libros citados en el análisis, usando APA 7.ª edición.'},
+];
+function render7(){
+  const open=window.sceneState.struct7open||{};
+  const items=struct7.map((s,i)=>`
+    <div class="struct-item">
+      <div class="struct-header" onclick="window.toggleStruct7(${i})" tabindex="0" role="button" aria-expanded="${!!open[i]}" aria-label="Expandir o colapsar sección: ${s.title}">
+        <span><span class="tag" aria-hidden="true">${i+1}</span>${s.title}</span><span aria-hidden="true">${open[i]?'▲':'▼'}</span>
+      </div>
+      <div class="struct-body${open[i]?' open':''}">${s.body}</div>
+    </div>`).join('');
+  return `<div class="scene">${audioBtn()}<div class="bubble narr"><strong>📋 Paso 4:</strong> Ordena estratégicamente tu análisis. Haz clic en cada sección.</div><div class="struct-list">${items}</div></div>`;
+}
+window.toggleStruct7 = function(i){ if(!window.sceneState.struct7open) window.sceneState.struct7open={}; window.sceneState.struct7open[i]=!window.sceneState.struct7open[i]; document.getElementById('content').innerHTML=render7(); }
+
+// Actividad de emparejar secciones (slide 8)
+function render8(){
+  if (!window.sceneState.parejas) window.sceneState.parejas = {1:null,2:null,3:null,4:null,5:null};
+  const itemsCorrectos = ["Introducción","Perspectiva teórica/analítica","Análisis del caso","Conclusiones","Bibliografía"];
+  const asignadas = Object.values(window.sceneState.parejas).filter(v => v !== null);
+  let disponibles = itemsCorrectos.filter(item => !asignadas.includes(item));
+  for (let i = disponibles.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [disponibles[i], disponibles[j]] = [disponibles[j], disponibles[i]]; }
+  const colIzq = [1,2,3,4,5].map(pos => {
+    const asignado = window.sceneState.parejas[pos];
+    const isFilled = asignado !== null;
+    return `<div style="background: ${isFilled ? '#e6f9f0' : '#f0f5ff'}; border: 2px solid ${isFilled ? 'var(--ok)' : 'var(--blue)'}; border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; gap: 12px; align-items:center;"><span style="background: var(--blue); color:white; width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;" aria-hidden="true">${pos}</span><span style="font-weight:600;">${asignado || '_____________'}</span></div>
+      <div>${isFilled ? `<button onclick="window.limpiarSeccionActividad(${pos})" style="background:none;border:1px solid #cbd5e1;border-radius:40px;padding:4px 12px;cursor:pointer;" aria-label="Limpiar sección ${pos}">✗ Limpiar</button>` : (!window.sceneState.q8done ? `<select onchange="window.emparejarSeccionActividad(${pos}, this.value)" style="padding:6px 10px; border-radius:30px; border:2px solid var(--blue);font-weight:500;" aria-label="Seleccionar sección para posición ${pos}"><option value="">Seleccionar...</option>${disponibles.map(item => `<option value="${item}">${item}</option>`).join('')}</select>` : '')}</div>
+    </div>`;
+  }).join('');
+  const colDer = `<div style="background:#fff8e7;border-radius:16px;padding:16px;border:2px solid var(--yellow);"><div style="font-weight:700;">📋 Secciones disponibles (orden aleatorio):</div><div style="display:flex;flex-direction:column;gap:8px; margin-top:10px;">${disponibles.length>0 ? disponibles.map(item => `<div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:10px;">📌 ${item}</div>`).join('') : '<div style="color:var(--ok);">✓ Todas asignadas</div>'}</div></div>`;
+  
+  let errorMsg = '';
+  let resetBtn = '';
+  
+  if(window.sceneState.errorParejas) {
+    errorMsg = `<div class="fb err" role="alert">✗ El orden no es correcto. Recuerda: Introducción → Perspectiva teórica → Análisis → Conclusiones → Bibliografía.</div>`;
+    resetBtn = `<div style="text-align: center; margin-top: 12px;"><button onclick="window.resetActivity8()" class="btn" style="background: #e62525; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 700;" aria-label="Reiniciar actividad de emparejar secciones">🔄 Reiniciar actividad</button></div>`;
+  }
+  
+  const successMsg = window.sceneState.q8done ? `<div class="fb ok" role="alert">✓ ¡Perfecto! Has ordenado correctamente las 5 secciones.</div>` : '';
+  
+  return `<div class="scene">${audioBtn()}<div class="scene-label">Actividad: arma la estructura del análisis</div><div class="bubble narr">🎯 Asigna cada sección a la posición correcta (1 a 5).</div>${errorMsg}${successMsg}${resetBtn}<div class="step-grid" style="grid-template-columns:1fr 0.9fr; gap:16px;"><div><div style="font-weight:700;">📌 Orden correcto:</div>${colIzq}</div><div>${colDer}</div></div></div>`;
+}
+
+window.emparejarSeccionActividad = function(posicion, item) {
+  if (window.sceneState.q8done) return;
+  if (!window.sceneState.parejas) window.sceneState.parejas = {1:null,2:null,3:null,4:null,5:null};
+  window.sceneState.parejas[posicion] = item;
+  const completo = Object.values(window.sceneState.parejas).every(v => v !== null);
+  if (completo) {
+    const itemsCorrectos = ["Introducción","Perspectiva teórica/analítica","Análisis del caso","Conclusiones","Bibliografía"];
+    const correcto = window.sceneState.parejas[1] === itemsCorrectos[0] && window.sceneState.parejas[2] === itemsCorrectos[1] && window.sceneState.parejas[3] === itemsCorrectos[2] && window.sceneState.parejas[4] === itemsCorrectos[3] && window.sceneState.parejas[5] === itemsCorrectos[4];
+    if (correcto) { 
+      window.sceneState.q8done = true; 
+      dots(); 
+    } else { 
+      window.sceneState.errorParejas = true; 
+    }
+  }
+  document.getElementById('content').innerHTML = render8();
+}
+
+window.limpiarSeccionActividad = function(posicion){ if(!window.sceneState.q8done && window.sceneState.parejas){ window.sceneState.parejas[posicion]=null; document.getElementById('content').innerHTML=render8(); } }
+
+window.resetActivity8 = function() {
+  window.sceneState.parejas = {1:null, 2:null, 3:null, 4:null, 5:null};
+  window.sceneState.q8done = false;
+  window.sceneState.errorParejas = false;
+  document.getElementById('content').innerHTML = render8();
+  const statusDiv = document.createElement('div');
+  statusDiv.setAttribute('role', 'status');
+  statusDiv.textContent = "Actividad reiniciada. Puedes volver a emparejar las secciones.";
+  statusDiv.style.position = 'absolute';
+  statusDiv.style.width = '1px';
+  statusDiv.style.height = '1px';
+  statusDiv.style.padding = '0';
+  statusDiv.style.margin = '-1px';
+  statusDiv.style.overflow = 'hidden';
+  document.body.appendChild(statusDiv);
+  setTimeout(() => statusDiv.remove(), 3000);
+}
+
+function render9(){
+  if (!window.sceneState.checklist) {
+    window.sceneState.checklist = {
+      problema: false,
+      evidencia: false,
+      coherencia: false,
+      ortografia: false
+    };
+  }
+  
+  const showAPA = window.sceneState.showAPA || false;
+  const showChecklist = window.sceneState.showChecklist || false;
+  
+  return `<div class="scene">
+    ${audioBtn()}
+
+    <div class="bubble narr"><strong>✅ Paso 5:</strong> Lee tu informe completo.</div>
+    
+    <div class="char-row" style="margin-bottom: 12px;">
+      <div class="char-col">
+        <div class="avatar av1" aria-label="Avatar del profesor">🧑‍💼</div>
+        <div class="char-name">Profesor</div>
+      </div>
+      <div class="bubble p1" style="background: var(--blue); flex: 1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span>📖 No olvides revisar que el listado de referencias utilice la norma <strong>APA 7ª edición</strong>.</span>
+        <button onclick="window.toggleAPAReminder()" style="background: white; border: none; border-radius: 40px; padding: 6px 16px; font-size: 11px; font-weight: 700; color: var(--blue); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" aria-label="${showAPA ? 'Ocultar formato APA' : 'Ver formato APA'}">
+          ${showAPA ? 'Ocultar formato' : 'Ver formato APA'}
+        </button>
+      </div>
+    </div>
+    
+    ${showAPA ? `
+    <div style="background: #f0f5ff; border-radius: 16px; padding: 16px; margin-bottom: 16px; border-left: 5px solid var(--blue);">
+      <div style="font-weight: 700; color: var(--blue); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+        <span>📚</span> Formato APA 7ª edición para artículo académico
+      </div>
+      <div style="background: white; border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.6; color: #1e293b;">
+        <div style="margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #e2e8f0;">
+          <strong>Estructura general:</strong>
+        </div>
+        <div style="font-family: monospace; background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+          <span style="font-weight: 600;">Apellido, Inicial.</span> (Año). <span style="font-weight: 500;"> Título del artículo</span>. <span style="font-style: italic;">Nombre de la revista</span>, <span style="font-style: italic;">Volumen</span>(Número), xx-xx. <span style="color: #2c66ff;">Enlace</span>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <strong>📌 Ejemplo real:</strong>
+        </div>
+        <div style="background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 12px;">
+          Gutiérrez, F. (2023). <span style="font-weight: 500;"> Impacto de las metodologías activas en la educación superior</span>. <span style="font-style: italic;">Revista de Pedagogía</span>, <span style="font-style: italic;">45</span>(2), 112-128. <span style="color: #2c66ff;">https://doi.org/xxxx</span>
+        </div>
+        <div style="margin-top: 12px; font-size: 11px; color: #475569; background: #fff8e7; padding: 8px; border-radius: 8px;">
+          💡 <strong>Nota:</strong> El nombre de la revista va en <em>cursiva</em>. El volumen también va en <em>cursiva</em>. El número del volumen va entre paréntesis, sin cursiva.
+        </div>
+      </div>
+    </div>
+    ` : ''}
+    
+    <div class="bubble info">Verifica que el objetivo planteado se haya cumplido y que todas las secciones estén completas.</div>
+    <div class="char-row right">
+      <div class="char-col">
+        <div class="avatar av2" aria-label="Avatar de Patricia">👩‍🎓</div>
+        <div class="char-name">Patricia</div>
+      </div>
+      <div class="bubble p2">¿El análisis cumple con lo solicitado?</div>
+    </div>
+    
+    <div class="char-row">
+      <div class="char-col">
+        <div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div>
+        <div class="char-name">Alberto</div>
+      </div>
+      <div class="bubble p1" style="background: var(--pink); flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <span>📋 <strong>¿Quieres revisar tu trabajo con una checklist?</strong></span>
+          <button onclick="window.toggleChecklistPanel()" style="background: white; border: none; border-radius: 40px; padding: 6px 16px; font-size: 11px; font-weight: 700; color: var(--pink); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" aria-label="${showChecklist ? 'Ocultar checklist' : 'Ver checklist de revisión'}">
+            ${showChecklist ? 'Ocultar checklist' : 'Ver checklist'}
+          </button>
+        </div>
+        
+${showChecklist ? `
+<div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.3);">
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+    <label class="checklist-item">
+      <input type="checkbox" id="chk_problema" onchange="window.toggleChecklist('problema')" ${window.sceneState.checklist.problema ? 'checked' : ''} aria-label="Marcar: Respuesta al problema">
+      <span><strong>Respuesta al problema:</strong> ¿La solución propuesta resuelve el conflicto central planteado al inicio?</span>
+    </label>
+    <label class="checklist-item">
+      <input type="checkbox" id="chk_evidencia" onchange="window.toggleChecklist('evidencia')" ${window.sceneState.checklist.evidencia ? 'checked' : ''} aria-label="Marcar: Evidencia sólida">
+      <span><strong>Evidencia sólida:</strong> ¿Cada argumento clave está respaldado en la bibliografía correspondiente o hechos del caso?</span>
+    </label>
+    <label class="checklist-item">
+      <input type="checkbox" id="chk_coherencia" onchange="window.toggleChecklist('coherencia')" ${window.sceneState.checklist.coherencia ? 'checked' : ''} aria-label="Marcar: Coherencia">
+      <span><strong>Coherencia:</strong> ¿Existe un hilo lógico directo entre el análisis y la conclusión?</span>
+    </label>
+    <label class="checklist-item">
+      <input type="checkbox" id="chk_ortografia" onchange="window.toggleChecklist('ortografia')" ${window.sceneState.checklist.ortografia ? 'checked' : ''} aria-label="Marcar: Ortografía y citación">
+      <span><strong>Ortografía y citación:</strong> ¿Se han revisado los errores tipográficos y todas las fuentes están correctamente acreditadas?</span>
+    </label>
+  </div>
+</div>
+` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+window.toggleChecklist = function(item) {
+  if (!window.sceneState.checklist) {
+    window.sceneState.checklist = {
+      problema: false,
+      evidencia: false,
+      coherencia: false,
+      ortografia: false
+    };
+  }
+  window.sceneState.checklist[item] = !window.sceneState.checklist[item];
+  
+  const statusDiv = document.createElement('div');
+  statusDiv.setAttribute('role', 'status');
+  statusDiv.textContent = `${item}: ${window.sceneState.checklist[item] ? 'marcado' : 'desmarcado'}.`;
+  statusDiv.style.position = 'absolute';
+  statusDiv.style.width = '1px';
+  statusDiv.style.height = '1px';
+  statusDiv.style.padding = '0';
+  statusDiv.style.margin = '-1px';
+  statusDiv.style.overflow = 'hidden';
+  document.body.appendChild(statusDiv);
+  setTimeout(() => statusDiv.remove(), 3000);
+}
+
+function render9dot5(){
+  if (!window.sceneState.apaFillBlanks) {
+    const baseReference = "González, M. (2022). _________. Revista de Innovación Educativa, _________(3), 45-62. _________";
+    const missingItems = [
+      { id: 'title', value: 'Impacto de las metodologías activas en el aprendizaje universitario', placeholder: '_________', position: 0 },
+      { id: 'volume', value: '15', placeholder: '_________', position: 1 },
+      { id: 'doi', value: 'https://doi.org/10.1234/rie.v15i3.456', placeholder: '_________', position: 2 }
+    ];
+    const shuffledMissing = [...missingItems];
+    for (let i = shuffledMissing.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledMissing[i], shuffledMissing[j]] = [shuffledMissing[j], shuffledMissing[i]];
+    }
+    window.sceneState.apaFillBlanks = {
+      baseReference: baseReference,
+      missingItems: missingItems,
+      availableItems: shuffledMissing,
+      droppedPositions: [null, null, null],
+      completed: false,
+      showFeedback: false,
+      isCorrect: false
+    };
+  }
+  
+  const state = window.sceneState.apaFillBlanks;
+  const completed = state.completed || false;
+  const showFeedback = state.showFeedback || false;
+  const isCorrect = state.isCorrect || false;
+  
+  const allFilled = state.droppedPositions.every(pos => pos !== null);
+  
+  let filledReference = state.baseReference;
+  state.droppedPositions.forEach((item, idx) => {
+    if (item) {
+      const placeholder = state.missingItems.find(m => m.id === item.id)?.placeholder || '_________';
+      filledReference = filledReference.replace(placeholder, `<strong>${item.value}</strong>`);
+    }
+  });
+  
+  return `<div class="scene" style="width: 100%; overflow-x: hidden; padding: 16px;">
+    ${audioBtn()}
+    <div class="scene-label" style="margin-bottom: 8px;">📚 Completa la referencia APA</div>
+    <div class="bubble narr" style="font-size: 11px; padding: 6px 10px; margin-bottom: 8px;">
+      <strong>🎯 Arrastra</strong> los elementos a los espacios en blanco
+    </div>
+    
+    <div style="background: #f0f5ff; border-radius: 10px; padding: 8px 10px; margin-bottom: 12px; border-left: 3px solid var(--blue); font-size: 10px; font-family: monospace; line-height: 1.4;">
+      ${filledReference.split('_________').map((part, idx, arr) => {
+        if (idx === arr.length - 1) return part;
+        const droppedItem = state.droppedPositions[idx];
+        return part + `<span style="display: inline-block; background: ${droppedItem ? '#e6f9f0' : '#fff3cd'}; border: 1px solid ${droppedItem ? 'var(--ok)' : '#ffc107'}; border-radius: 4px; padding: 1px 4px; margin: 0 1px; font-weight: 600;">${droppedItem ? droppedItem.value : '_____'}</span>`;
+      }).join('')}
+    </div>
+    
+    <div style="background: white; border-radius: 10px; padding: 6px 8px; border: 1px solid var(--blue); margin-bottom: 10px;">
+      <div style="font-weight: 600; font-size: 9px; margin-bottom: 6px; text-align: center; color: var(--blue);">📌 Coloca aquí:</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+        ${state.missingItems.map((item, idx) => {
+          const droppedItem = state.droppedPositions[idx];
+          return `
+            <div id="dropzone_${idx}" 
+                 class="drop-zone-blank" 
+                 ondragover="window.onDragOverBlank(event)" 
+                 ondrop="window.onDropBlank(event, ${idx})"
+                 style="flex: 1; min-width: 70px; background: ${droppedItem ? '#e6f9f0' : '#f8fafc'}; border: 1px dashed ${droppedItem ? 'var(--ok)' : '#94a3b8'}; border-radius: 8px; padding: 6px 4px; text-align: center;"
+                 aria-label="Espacio para colocar elemento ${idx + 1}">
+              ${droppedItem ? `
+                <div style="font-size: 9px; font-weight: 600;">${droppedItem.value.length > 15 ? droppedItem.value.substring(0, 12) + '...' : droppedItem.value}</div>
+                <button onclick="window.clearBlankPosition(${idx})" style="background: none; border: none; font-size: 9px; color: #999; cursor: pointer; margin-top: 2px;" aria-label="Limpiar espacio ${idx + 1}">✗</button>
+              ` : `<div style="color: #aaa; font-size: 9px;">⬅ Espacio ${idx + 1}</div>`}
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+    
+    <div style="background: #fef9e3; border-radius: 10px; padding: 6px 8px; border: 1px solid var(--yellow); margin-bottom: 10px;">
+      <div style="font-weight: 600; font-size: 9px; margin-bottom: 6px; text-align: center; color: var(--yellow);">🎴 Arrastra:</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+        ${state.availableItems.map((item, idx) => {
+          const isAlreadyPlaced = state.droppedPositions.some(pos => pos && pos.id === item.id);
+          if (isAlreadyPlaced) return '';
+          return `
+            <div id="drag_${idx}" 
+                 draggable="true" 
+                 ondragstart="window.onDragStartBlank(event, '${item.id}')" 
+                 ondragend="window.onDragEndBlank(event)"
+                 style="background: var(--yellow); border-radius: 8px; padding: 4px 10px; cursor: grab; user-select: none; font-size: 10px; font-weight: 500; text-align: center;"
+                 aria-label="Elemento arrastrable: ${item.value.length > 20 ? item.value.substring(0, 18) + '...' : item.value}">
+              ${item.value.length > 20 ? item.value.substring(0, 18) + '...' : item.value}
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 8px;">
+      <button onclick="window.checkFillBlanks()" class="btn btn-main" ${!allFilled ? 'disabled' : ''} style="padding: 4px 14px; font-size: 10px; ${!allFilled ? 'opacity: 0.5;' : ''}" aria-label="Verificar respuesta">✓ Verificar</button>
+      <button onclick="window.resetFillBlanks()" class="btn btn-back" style="padding: 4px 14px; font-size: 10px;" aria-label="Reiniciar actividad">⟳ Reiniciar</button>
+    </div>
+    
+    ${showFeedback ? `
+    <div class="fb ${isCorrect ? 'ok' : 'err'}" role="alert" style="font-size: 10px; padding: 6px;">
+      ${isCorrect ? '🎉 ¡Correcto! ✅' : '❌ Revisa el orden: Título → Volumen → DOI'}
+    </div>
+    ` : ''}
+    
+    ${completed ? `
+    <div class="bubble ok" style="background: #e6f9f0; color: var(--ok); text-align: center; margin-top: 4px; font-size: 9px; padding: 4px;" role="status">
+      🎓 ¡Completado! Continúa.
+    </div>
+    ` : ''}
+  </div>`;
+}
+
+let draggedBlankItemId = null;
+
+window.onDragStartBlank = function(event, itemId) {
+  draggedBlankItemId = itemId;
+  event.dataTransfer.setData('text/plain', itemId);
+  event.dataTransfer.effectAllowed = 'move';
+  event.target.style.opacity = '0.5';
+}
+
+window.onDragEndBlank = function(event) {
+  event.target.style.opacity = '1';
+  draggedBlankItemId = null;
+}
+
+window.onDragOverBlank = function(event) {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
+  event.currentTarget.style.background = '#eef2ff';
+}
+
+window.onDropBlank = function(event, positionIndex) {
+  event.preventDefault();
+  const dropZone = event.currentTarget;
+  dropZone.style.background = '';
+  
+  if (!draggedBlankItemId) return;
+  
+  const state = window.sceneState.apaFillBlanks;
+  if (!state) return;
+  
+  const draggedItemIndex = state.availableItems.findIndex(item => item.id === draggedBlankItemId);
+  if (draggedItemIndex === -1) return;
+  const draggedItem = state.availableItems[draggedItemIndex];
+  
+  if (state.droppedPositions[positionIndex] !== null) return;
+  if (state.droppedPositions.some(pos => pos && pos.id === draggedBlankItemId)) return;
+  
+  state.droppedPositions[positionIndex] = draggedItem;
+  state.availableItems.splice(draggedItemIndex, 1);
+  
+  document.getElementById('content').innerHTML = render9dot5();
+}
+
+window.clearBlankPosition = function(positionIndex) {
+  const state = window.sceneState.apaFillBlanks;
+  if (!state) return;
+  
+  const removedItem = state.droppedPositions[positionIndex];
+  if (!removedItem) return;
+  
+  state.droppedPositions[positionIndex] = null;
+  state.availableItems.push(removedItem);
+  
+  document.getElementById('content').innerHTML = render9dot5();
+}
+
+window.checkFillBlanks = function() {
+  const state = window.sceneState.apaFillBlanks;
+  if (!state) return;
+  
+  const allFilled = state.droppedPositions.every(pos => pos !== null);
+  if (!allFilled) return;
+  
+  let correct = true;
+  for (let i = 0; i < state.droppedPositions.length; i++) {
+    if (state.droppedPositions[i].id !== state.missingItems[i].id) {
+      correct = false;
+      break;
+    }
+  }
+  
+  state.isCorrect = correct;
+  state.showFeedback = true;
+  if (correct) {
+    state.completed = true;
+  }
+  document.getElementById('content').innerHTML = render9dot5();
+}
+
+window.resetFillBlanks = function() {
+  const state = window.sceneState.apaFillBlanks;
+  if (!state) return;
+  
+  const newShuffled = [...state.missingItems];
+  for (let i = newShuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newShuffled[i], newShuffled[j]] = [newShuffled[j], newShuffled[i]];
+  }
+  state.availableItems = newShuffled;
+  state.droppedPositions = [null, null, null];
+  state.completed = false;
+  state.showFeedback = false;
+  state.isCorrect = false;
+  document.getElementById('content').innerHTML = render9dot5();
+}
+
+function render10(){
+  return `<div class="finish-screen">
+    ${audioBtn()}
+    <div class="finish-icon" aria-hidden="true">🏆</div>
+    <div class="finish-title">¡Lo lograste!</div>
+    <div class="finish-sub">Completaste los <strong>5 pasos</strong> para analizar un caso:<br><br>
+      <strong>1.</strong> Establecer un objetivo<br>
+      <strong>2.</strong> Leer el caso con detalle<br>
+      <strong>3.</strong> Conectar con contenidos de la unidad<br>
+      <strong>4.</strong> Estructurar el análisis<br>
+      <strong>5.</strong> Revisar el informe final
+    </div>
+  </div>`;
+}
+
+function render11(){
+  return `<div class="scene" style="width: 100%; overflow-x: hidden;">
+    <div class="scene-label">📚 Referencias bibliográficas</div>
+    
+    <div class="bubble narr" style="margin-bottom: 16px;">
+      <strong>📖 Fuentes utilizadas</strong> para la creación de este recurso educativo:
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="background: white; border-radius: 12px; padding: 10px 12px; border-left: 4px solid var(--blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <div style="font-size: 10px; line-height: 1.5; color: var(--dark-text);">
+          <strong>Centro de Innovación Docente</strong> (2021). 
+          <span style="font-style: italic;">Análisis de caso</span>. 
+          Universidad del Desarrollo.
+          <br>
+          <a href="https://innovaciondocente.udd.cl/recursos-educativos/analisis-de-caso-2/" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style="color: var(--blue); text-decoration: none; word-break: break-all; font-size: 9px;"
+             aria-label="Enlace al recurso del Centro de Innovación Docente, se abre en nueva ventana">
+            https://innovaciondocente.udd.cl/recursos-educativos/analisis-de-caso-2/
+          </a>
+        </div>
+      </div>
+      
+      <div style="background: white; border-radius: 12px; padding: 10px 12px; border-left: 4px solid var(--blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <div style="font-size: 10px; line-height: 1.5; color: var(--dark-text);">
+          <strong>Universidad de Chile</strong>. (s.f.). 
+          <span style="font-style: italic;">¿Cómo escribir un informe de estudio de caso?</span>. 
+          Aprendizaje UChile.
+          <br>
+          <a href="https://aprendizaje.uchile.cl/recursos-especificos-por-areas-disciplinares/ciencias-sociales/instituto-de-asuntos-publicos/administracion-publica/como-escribir-un-informe-de-estudio-de-caso/" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style="color: var(--blue); text-decoration: none; word-break: break-all; font-size: 9px;"
+             aria-label="Enlace al recurso de la Universidad de Chile, se abre en nueva ventana">
+            https://aprendizaje.uchile.cl/recursos-especificos-por-areas-disciplinares/ciencias-sociales/instituto-de-asuntos-publicos/administracion-publica/como-escribir-un-informe-de-estudio-de-caso/
+          </a>
+        </div>
+      </div>
+      
+      <div style="background: white; border-radius: 12px; padding: 10px 12px; border-left: 4px solid var(--blue); box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+        <div style="font-size: 10px; line-height: 1.5; color: var(--dark-text);">
+          <strong>Maldonado Rojas, M., Vásquez Rojas, M., & Toro Opazo, C.</strong> (2010). 
+          Desarrollo metodológico de "análisis de casos" como estrategia de enseñanza. 
+          <span style="font-style: italic;">Educación Médica Superior</span>, 
+          <span style="font-style: italic;">24</span>(1), 85-94.
+          <br>
+          <a href="http://scielo.sld.cu/scielo.php?script=sci_arttext&pid=S0864-21412010000100010&lng=es&tlng=es" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style="color: var(--blue); text-decoration: none; word-break: break-all; font-size: 9px;"
+             aria-label="Enlace al artículo en SciELO, se abre en nueva ventana">
+            http://scielo.sld.cu/scielo.php?script=sci_arttext&pid=S0864-21412010000100010&lng=es&tlng=es
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bubble info" style="margin-top: 16px; text-align: center; font-size: 10px;">
+      📌 Estos materiales han sido adaptados con fines educativos.
+    </div>
+  </div>`;
+}
+
+const scenes = [render1, render2, render3, render4, render5, render6, render7, render8, render9, render9dot5, render10, render11];
+
+function init(){ dots(); document.getElementById('content').innerHTML = scenes[0](); }
+init();
+</script>
+</body>
+</html>
