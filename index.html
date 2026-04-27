@@ -688,6 +688,46 @@
       outline: 3px solid var(--blue);
       outline-offset: 2px;
     }
+    
+    /* Estilos para la portada */
+    .cover-logo {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0 30px 0;
+    }
+    .uniacc-logo {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 15px 25px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .cover-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-align: center;
+      color: var(--blue);
+      margin: 20px 0 10px;
+      line-height: 1.3;
+    }
+    .cover-sub {
+      text-align: center;
+      color: #4b5563;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+    .intro-bubble {
+      background: #f0f4fe;
+      border-radius: 24px;
+      padding: 18px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      border-left: 5px solid var(--blue);
+    }
   </style>
 </head>
 <body>
@@ -702,7 +742,7 @@
   <div id="content" style="flex:1;display:flex;flex-direction:column" role="region" aria-live="polite" id="main-content" tabindex="-1"></div>
   <div class="nav-row">
     <button class="btn btn-back" id="prevBtn" aria-label="Paso anterior">← Anterior</button>
-    <span class="nav-center" id="navLabel" aria-live="polite">1 / 12</span>
+    <span class="nav-center" id="navLabel" aria-live="polite">1 / 14</span>
     <button class="btn btn-main" id="nextBtn" aria-label="Paso siguiente">Siguiente →</button>
   </div>
 </div>
@@ -711,13 +751,17 @@
 // Hacer las funciones globales asignándolas a window
 window.sceneState = {};
 
-const TOTAL = 12;
+// Cambiar TOTAL de 12 a 14 por las dos nuevas slides
+const TOTAL = 14;
 let current = 0;
 let synth = window.speechSynthesis;
 let isPlaying = false;
 let selectedVoice = null;
 
+// AUDIO actualizado con las dos nuevas slides al inicio
 const AUDIO = [
+  "Bienvenido a la herramienta paso a paso ¿Cómo analizar un caso?",
+  "El análisis de caso es una forma que se utiliza para evaluar lo que aprendimos. Se presenta una situación y se deben proponer soluciones o analizar según lo que solicite en la evaluación. Acompaña a Alberto y Patricia a realizar esta evaluación",
   "La evaluación de esta unidad consistirá en un análisis de caso. ¡Vamos a analizarlo!",
   "Actividad: ¿Por dónde comenzamos?...",
   "Paso uno: establecer un objetivo...",
@@ -888,7 +932,43 @@ document.addEventListener('DOMContentLoaded', function() {
   if(mainContent) mainContent.focus();
 });
 
-// ------------------------- RENDER ESCENAS ---------------------------------
+// ==================== NUEVAS SLIDES ====================
+// SLIDE 1: PORTADA CON LOGO UNIACC (sin avatares)
+function renderCover(){
+  return `<div class="scene" style="justify-content: center; text-align: center;">
+    ${audioBtn()}
+    <div class="cover-logo">
+      <div class="uniacc-logo">
+        <img src="UNIACC_LOGO1.png" alt="Logo UNIACC" style="height: 60px; width: auto;" onerror="this.src='https://placehold.co/250x70/2c66ff/white?text=UNIACC'">
+      </div>
+    </div>
+    <div class="cover-title">¿Cómo analizar un caso?<br>Paso a paso</div>
+    <div style="font-size: 12px; color: #64748b; margin-top: 20px;">✨ Aprende a estructurar tu análisis con éxito ✨</div>
+  </div>`;
+}
+
+// SLIDE 2: EXPLICACIÓN DEL ANÁLISIS DE CASO
+function renderIntro(){
+  return `<div class="scene">
+    ${audioBtn()}
+    <div class="intro-bubble">
+      <div style="font-weight: 800; color: var(--blue); margin-bottom: 10px;">📘 El análisis de caso</div>
+      <p>Es una forma que se utiliza para evaluar lo que aprendimos. Se plantea una situación, y nos invitan a entender qué está pasando y descubrir cuál es el problema principal. Para ello explicaremos por qué ocurre y propondremos una solución lógica usando lo aprendido en la unidad.</p>
+      <p style="margin-top: 12px; background: #eef2ff; padding: 8px 12px; border-radius: 20px;"><strong>Acompaña a Alberto y Patricia</strong> a realizar esta evaluación paso a paso.</p>
+    </div>
+    <div class="char-row" style="margin-top: 16px;">
+      <div class="char-col"><div class="avatar av2">👩‍🎓</div><div class="char-name">Patricia</div></div>
+      <div class="bubble p2" style="background: var(--yellow-contrast);"> No me siento lista para la evaluación de esta unidad.</div>
+    </div>
+    <div class="char-row right">
+      <div class="char-col"><div class="avatar av3">🧑‍🎓</div><div class="char-name">Alberto</div></div>
+      <div class="bubble p1" style="background: var(--pink);">Juntos lo resolveremos →</div>
+    </div>
+  </div>`;
+}
+
+// ==================== CÓDIGO ORIGINAL COMPLETO ====================
+// ------------------------- RENDER ESCENAS ORIGINALES ---------------------------------
 function render1(){
   return `<div class="scene">
     ${audioBtn()}
@@ -898,11 +978,11 @@ function render1(){
     </div>
     <div class="char-row right">
       <div class="char-col"><div class="avatar av2" aria-label="Avatar de Patricia">👩‍🎓</div><div class="char-name">Patricia</div></div>
-      <div class="bubble p2" style="flex:1">¿Cómo lo hago?</div>
+      <div class="bubble p2" style="flex:1">¿Cómo se analiza un caso?</div>
     </div>
     <div class="char-row">
       <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
-      <div class="bubble p1" style="flex:1; background: #cc00cc;">Vamos paso a paso.</div>
+      <div class="bubble p1" style="flex:1; background: #cc00cc;">Lo haremos paso a paso.</div>
     </div>
   </div>`;
 }
@@ -951,7 +1031,7 @@ function render2(){
 window.checkQ = function(i){
   if(window.sceneState.q2done) return;
   window.sceneState.q2done=true; window.sceneState.q2sel=i; window.sceneState.q2correct=(i===2);
-  dots(); document.getElementById('content').innerHTML=render2();
+  dots(); document.getElementById('content').innerHTML = scenes[current]();
   const msg = window.sceneState.q2correct ? "Respuesta correcta. Puedes continuar." : "Respuesta incorrecta. Revisa la retroalimentación.";
   const statusDiv = document.createElement('div');
   statusDiv.setAttribute('role', 'status');
@@ -965,7 +1045,7 @@ window.resetActivity2 = function() {
   window.sceneState.q2done = false;
   window.sceneState.q2sel = null;
   window.sceneState.q2correct = false;
-  document.getElementById('content').innerHTML = render2();
+  document.getElementById('content').innerHTML = scenes[current]();
   const statusDiv = document.createElement('div');
   statusDiv.setAttribute('role', 'status');
   statusDiv.textContent = "Actividad reiniciada. Puedes volver a intentar la pregunta.";
@@ -1015,7 +1095,7 @@ function render3(){
     </div>` : ''}
   </div>`;
 }
-window.toggleEjemploObjetivo = function() { window.sceneState.ejemploObjetivoVisible = !window.sceneState.ejemploObjetivoVisible; document.getElementById('content').innerHTML = render3(); }
+window.toggleEjemploObjetivo = function() { window.sceneState.ejemploObjetivoVisible = !window.sceneState.ejemploObjetivoVisible; document.getElementById('content').innerHTML = scenes[current](); }
 
 function render4(){
   const tipsVisible = window.sceneState.tipsSintesisVisible || false;
@@ -1063,16 +1143,7 @@ Ignora información decorativa o redundante.</div>
   </div>`;
 }
 
-window.toggleTipsSintesis = function() { window.sceneState.tipsSintesisVisible = !window.sceneState.tipsSintesisVisible; document.getElementById('content').innerHTML = render4(); }
-
-window.toggleAPAReminder = function() {
-  window.sceneState.showAPA = !window.sceneState.showAPA;
-  document.getElementById('content').innerHTML = render9();
-}
-window.toggleChecklistPanel = function() {
-  window.sceneState.showChecklist = !window.sceneState.showChecklist;
-  document.getElementById('content').innerHTML = render9();
-}
+window.toggleTipsSintesis = function() { window.sceneState.tipsSintesisVisible = !window.sceneState.tipsSintesisVisible; document.getElementById('content').innerHTML = scenes[current](); }
 
 function render5(){
   return `<div class="scene">
@@ -1339,7 +1410,7 @@ window.placeByTouch = function(zoneIndex, itemIndex) {
     window.sceneState.q6error = false;
   }
   
-  document.getElementById('content').innerHTML = render6();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 // === Funciones originales drag & drop (mantenidas para desktop) ===
@@ -1390,7 +1461,7 @@ window.dp6 = function(e, zi) {
   } else {
     window.sceneState.q6error = false;
   }
-  document.getElementById('content').innerHTML = render6();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 window.resetActivity6 = function() {
@@ -1401,7 +1472,7 @@ window.resetActivity6 = function() {
   drag6 = null;
   touchSelectedItem = null;
   touchSelectedIndex = null;
-  document.getElementById('content').innerHTML = render6();
+  document.getElementById('content').innerHTML = scenes[current]();
   
   const statusDiv = document.createElement('div');
   statusDiv.setAttribute('role', 'status');
@@ -1440,7 +1511,7 @@ function render7(){
 
   </div>`;
 }
-window.toggleStruct7 = function(i){ if(!window.sceneState.struct7open) window.sceneState.struct7open={}; window.sceneState.struct7open[i]=!window.sceneState.struct7open[i]; document.getElementById('content').innerHTML=render7(); }
+window.toggleStruct7 = function(i){ if(!window.sceneState.struct7open) window.sceneState.struct7open={}; window.sceneState.struct7open[i]=!window.sceneState.struct7open[i]; document.getElementById('content').innerHTML=scenes[current](); }
 
 // ========== ACTIVIDAD PASO 8 - VERSIÓN ORIGINAL RESTAURADA (con mejoras táctiles mínimas) ==========
 
@@ -1579,14 +1650,14 @@ window.emparejarSeccionActividad = function(posicion, item) {
       window.sceneState.errorParejas = true; 
     }
   }
-  document.getElementById('content').innerHTML = render8();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 window.limpiarSeccionActividad = function(posicion) {
   if (!window.sceneState.q8done && window.sceneState.parejas) {
     window.sceneState.parejas[posicion] = null;
     if (window.sceneState.errorParejas) window.sceneState.errorParejas = false;
-    document.getElementById('content').innerHTML = render8();
+    document.getElementById('content').innerHTML = scenes[current]();
   }
 }
 
@@ -1594,7 +1665,7 @@ window.resetActivity8 = function() {
   window.sceneState.parejas = {1: null, 2: null, 3: null, 4: null, 5: null};
   window.sceneState.q8done = false;
   window.sceneState.errorParejas = false;
-  document.getElementById('content').innerHTML = render8();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 function render9(){
@@ -1702,6 +1773,14 @@ ${showChecklist ? `
   </div>`;
 }
 
+window.toggleAPAReminder = function() {
+  window.sceneState.showAPA = !window.sceneState.showAPA;
+  document.getElementById('content').innerHTML = scenes[current]();
+}
+window.toggleChecklistPanel = function() {
+  window.sceneState.showChecklist = !window.sceneState.showChecklist;
+  document.getElementById('content').innerHTML = scenes[current]();
+}
 window.toggleChecklist = function(item) {
   if (!window.sceneState.checklist) {
     window.sceneState.checklist = {
@@ -1971,7 +2050,7 @@ window.onTouchBlankStart = function(event, positionIndex) {
   document.body.appendChild(announcement);
   setTimeout(() => announcement.remove(), 2000);
   
-  document.getElementById('content').innerHTML = render9dot5();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 // === Funciones drag & drop originales (mantenidas para desktop) ===
@@ -2015,7 +2094,7 @@ window.onDropBlank = function(event, positionIndex) {
   state.droppedPositions[positionIndex] = draggedItem;
   state.availableItems.splice(draggedItemIndex, 1);
   
-  document.getElementById('content').innerHTML = render9dot5();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 window.clearBlankPosition = function(positionIndex) {
@@ -2039,7 +2118,7 @@ window.clearBlankPosition = function(positionIndex) {
     });
   }
   
-  document.getElementById('content').innerHTML = render9dot5();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 window.checkFillBlanks = function() {
@@ -2062,7 +2141,7 @@ window.checkFillBlanks = function() {
   if (correct) {
     state.completed = true;
   }
-  document.getElementById('content').innerHTML = render9dot5();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 window.resetFillBlanks = function() {
@@ -2089,24 +2168,7 @@ window.resetFillBlanks = function() {
     el.removeAttribute('data-selected');
   });
   
-  document.getElementById('content').innerHTML = render9dot5();
-}
-
-window.resetFillBlanks = function() {
-  const state = window.sceneState.apaFillBlanks;
-  if (!state) return;
-  
-  const newShuffled = [...state.missingItems];
-  for (let i = newShuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newShuffled[i], newShuffled[j]] = [newShuffled[j], newShuffled[i]];
-  }
-  state.availableItems = newShuffled;
-  state.droppedPositions = [null, null, null];
-  state.completed = false;
-  state.showFeedback = false;
-  state.isCorrect = false;
-  document.getElementById('content').innerHTML = render9dot5();
+  document.getElementById('content').innerHTML = scenes[current]();
 }
 
 function render10(){
@@ -2189,7 +2251,8 @@ function render11(){
   </div>`;
 }
 
-const scenes = [render1, render2, render3, render4, render5, render6, render7, render8, render9, render9dot5, render10, render11];
+// Array de escenas: las dos nuevas slides + las 12 originales = TOTAL 14
+const scenes = [renderCover, renderIntro, render1, render2, render3, render4, render5, render6, render7, render8, render9, render9dot5, render10, render11];
 
 function init(){ dots(); document.getElementById('content').innerHTML = scenes[0](); }
 init();
