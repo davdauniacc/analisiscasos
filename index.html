@@ -7,23 +7,24 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
     
-    /* Mejoras de accesibilidad WCAG 2.1 AA */
+    
+/* Mejoras de accesibilidad WCAG 2.1 AA */
     *{box-sizing:border-box;margin:0;padding:0}
     
     :root {
-      --blue:#2c66ff;
-      --yellow:#eab308;
-      --pink:#ff01ff;
-      --dark:#2d2f36;
-      --dark-text:#1e1e24;
-      --light:#f8f9fc;
-      --ok:#00a859;
-      --err:#e62525;
-      --radius:14px;
-      /* Colores con mejor contraste WCAG AA */
-      --blue-contrast:#1a4fd6;
-      --yellow-contrast:#d4a000;
-      --pink-contrast:#cc00cc;
+  --blue:#2c66ff;
+  --yellow:#eab308;
+  --pink:#cc00cc;
+  --dark:#2d2f36;
+  --dark-text:#1e1e24;
+  --light:#f8f9fc;
+  --ok:#00a859;
+  --err:#e62525;
+  --radius:14px;
+  /* Colores con mejor contraste WCAG AA */
+  --blue-contrast:#1a4fd6;
+  --yellow-contrast:#d4a000;
+  --pink-contrast:#cc00cc;
     }
     
     body { 
@@ -901,7 +902,7 @@ function render1(){
     </div>
     <div class="char-row">
       <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
-      <div class="bubble p1" style="flex:1; background: var(--pink);">Vamos paso a paso.</div>
+      <div class="bubble p1" style="flex:1; background: #cc00cc;">Vamos paso a paso.</div>
     </div>
   </div>`;
 }
@@ -986,18 +987,18 @@ function render3(){
     <div class="bubble info">Responde: <strong>¿Qué debo analizar?</strong> ¿Con qué contenidos de la unidad se conectan estas actividades?</div>
     <div class="char-row" style="margin-top: 4px; align-items: center;">
       <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
-      <div class="bubble p1" style="background: var(--pink); flex: 1; display: flex; justify-content: space-between; align-items: center;">
+      <div class="bubble p1" style="background: #cc00cc; flex: 1; display: flex; justify-content: space-between; align-items: center; color: white;">
         <span>📘 ¡Te ayudo con un ejemplo!</span>
-        <button onclick="window.toggleEjemploObjetivo()" style="background: white; border: none; border-radius: 40px; padding: 4px 14px; font-size: 11px; font-weight: 600; color: var(--pink); cursor: pointer;" aria-label="${ejemploVisible ? 'Ocultar ejemplo' : 'Ver ejemplo de objetivo'}">${ejemploVisible ? 'Ocultar' : 'Ver ejemplo'}</button>
+        <button onclick="window.toggleEjemploObjetivo()" style="background: white; border: none; border-radius: 40px; padding: 4px 14px; font-size: 11px; font-weight: 600; color: #cc00cc; cursor: pointer;" aria-label="${ejemploVisible ? 'Ocultar ejemplo' : 'Ver ejemplo de objetivo'}">${ejemploVisible ? 'Ocultar' : 'Ver ejemplo'}</button>
       </div>
     </div>
-    ${ejemploVisible ? `<div style="background: #f0f5ff; border-radius: 16px; padding: 16px; margin-top: 4px; border-left: 5px solid var(--pink);">
-      <div style="font-size: 12px; font-weight: 700; color: var(--pink); margin-bottom: 8px;">📋 Ejemplo - Instrucción de evaluación:</div>
+    ${ejemploVisible ? `<div style="background: #f0f5ff; border-radius: 16px; padding: 16px; margin-top: 4px; border-left: 5px solid #cc00cc;">
+      <div style="font-size: 12px; font-weight: 700; color: #cc00cc; margin-bottom: 8px;">📋 Ejemplo - Instrucción de evaluación:</div>
       <div style="background: white; border-radius: 12px; padding: 12px; font-size: 12px; color: #2d3a4a; margin-bottom: 12px; border: 1px solid #e2e8f0;">
         "A partir del caso <strong>Empresa GreenFuture S.A.</strong>, analiza las decisiones estratégicas tomadas por la gerencia durante la crisis ambiental del año 2022. Relaciona tu análisis con los contenidos de la unidad sobre <strong>Ética empresarial</strong> y <strong>Responsabilidad social corporativa</strong>."
       </div>
-      <div style="font-size: 12px; font-weight: 700; color: var(--pink); margin-bottom: 6px;">🎯 Objetivos propuestos:</div>
-<div style="background: white; border-radius: 12px; padding: 12px; font-size: 12px; border: 1px solid var(--pink);">
+      <div style="font-size: 12px; font-weight: 700; color: #cc00cc; margin-bottom: 6px;">🎯 Objetivos propuestos:</div>
+<div style="background: white; border-radius: 12px; padding: 12px; font-size: 12px; border: 1px solid #cc00cc;">
   <div style="margin-bottom: 10px;">
     <strong>¿Qué analizar?:</strong> Analizar las decisiones estratégicas de la gerencia de GreenFuture S.A. durante la crisis ambiental de 2022.
   </div>
@@ -1025,16 +1026,16 @@ function render4(){
     <div class="bubble info">Elabora una <strong>síntesis</strong> con los datos más relevantes para un análisis completo.</div>
     <div class="char-row right" style="align-items: center;">
       <div class="char-col"><div class="avatar av3" aria-label="Avatar de Alberto">🧑‍🎓</div><div class="char-name">Alberto</div></div>
-      <div class="bubble p2" style="background: var(--pink); flex:1; display: flex; justify-content: space-between;">
+      <div class="bubble p2" style="background: #cc00cc; flex:1; display: flex; justify-content: space-between; color: white;">
         <span>📝 ¿Necesitas tips para sintetizar?</span>
-        <button onclick="window.toggleTipsSintesis()" style="background: white; border: none; border-radius: 40px; padding: 4px 14px; font-weight:600; color: var(--pink); cursor: pointer;" aria-label="${tipsVisible ? 'Ocultar tips de síntesis' : 'Ver tips para sintetizar'}">${tipsVisible ? 'Ocultar tips' : 'Ver tips'}</button>
+        <button onclick="window.toggleTipsSintesis()" style="background: white; border: none; border-radius: 40px; padding: 4px 14px; font-weight:600; color: #cc00cc; cursor: pointer;" aria-label="${tipsVisible ? 'Ocultar tips de síntesis' : 'Ver tips para sintetizar'}">${tipsVisible ? 'Ocultar tips' : 'Ver tips'}</button>
       </div>
     </div>
-    ${tipsVisible ? `<div style="background: #fff8e7; border-radius: 16px; padding: 14px; margin-top: 8px; border-left: 5px solid var(--yellow);">
-      <div style="font-weight: 700; color: var(--yellow); margin-bottom: 12px;">💡 3 Tips para elaborar una síntesis de caso:</div>
+    ${tipsVisible ? `<div style="background: #fff8e7; border-radius: 16px; padding: 14px; margin-top: 8px; border-left: 5px solid #cc00cc;">
+      <div style="font-weight: 700; color: #cc00cc; margin-bottom: 12px;">💡 3 Tips para elaborar una síntesis de caso:</div>
       <div style="background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid #eee;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="background: var(--yellow); color: var(--dark); width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">1</span>
+          <span style="background: #cc00cc; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">1</span>
           <span style="font-weight: 600;">Identifica los hechos clave</span>
         </div>
         <div style="font-size: 11.5px; color: #555; margin-top: 6px; margin-left: 34px;">Extrae solo los datos esenciales: ¿quién?, ¿qué pasó?, ¿cuándo?, ¿dónde?, ¿cómo?, ¿por qué? 
@@ -1042,14 +1043,14 @@ Ignora información decorativa o redundante.</div>
       </div>
       <div style="background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid #eee;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="background: var(--yellow); color: var(--dark); width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">2</span>
+          <span style="background: #cc00cc; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">2</span>
           <span style="font-weight: 600;">Usa tus propias palabras</span>
         </div>
         <div style="font-size: 11.5px; color: #555; margin-top: 6px; margin-left: 34px;">Reescribe la información sin copiar textualmente. Esto te ayuda a comprender realmente el caso y a detectar lo que no entiendes.</div>
       </div>
       <div style="background: white; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; border: 1px solid #eee;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <span style="background: var(--yellow); color: var(--dark); width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">3</span>
+          <span style="background: #cc00cc; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px;" aria-hidden="true">3</span>
           <span style="font-weight: 600;">Organiza en párrafos breves</span>
         </div>
         <div style="font-size: 11.5px; color: #555; margin-top: 6px; margin-left: 34px;">Separa la información en ideas claras: contexto → problema principal → actores involucrados → consecuencias → preguntas abiertas.</div>
@@ -1058,9 +1059,10 @@ Ignora información decorativa o redundante.</div>
         ⚡ Una buena síntesis no supera una página. ¡Ve al grano!
       </div>
     </div>` : ''}
-    <div class="bubble info" style="border-left-color: var(--yellow);">💡 ¿Consideras que faltan datos en el caso? ¡Consulta con tu docente!</div>
+    <div class="bubble info" style="border-left-color: #cc00cc;">💡 ¿Consideras que faltan datos en el caso? ¡Consulta con tu docente!</div>
   </div>`;
 }
+
 window.toggleTipsSintesis = function() { window.sceneState.tipsSintesisVisible = !window.sceneState.tipsSintesisVisible; document.getElementById('content').innerHTML = render4(); }
 
 window.toggleAPAReminder = function() {
@@ -1094,39 +1096,96 @@ function render5(){
   </div>`;
 }
 
-const items6=["Establecer un objetivo para analizar el caso.","Leer el caso.","Realizar una síntesis con los detalles relevantes.","Conectar el caso con los contenidos de la unidad."];
-const shuf6=[2,0,3,1];
-let placed6=null, drag6=null;
+// ========== ACTIVIDAD PASO 6 - VERSIÓN MEJORADA PARA MÓVIL ==========
 
-function render6(){
-  // Asegurar que placed6 esté sincronizado con sceneState
-  if(!window.sceneState.placed6) {
+const items6 = ["Establecer un objetivo para analizar el caso.", "Leer el caso.", "Realizar una síntesis con los detalles relevantes.", "Conectar el caso con los contenidos de la unidad."];
+const shuf6 = [2, 0, 3, 1];
+let placed6 = null, drag6 = null;
+
+function render6() {
+  // Inicializar estado
+  if (!window.sceneState.placed6) {
     window.sceneState.placed6 = Array(4).fill(null);
   }
   placed6 = window.sceneState.placed6;
   
-  const isP=idx=>placed6.includes(idx);
-  const cards=shuf6.map(idx=>`<div class="step-card" draggable="${!isP(idx)}" id="c6_${idx}" ondragstart="window.ds6(event,${idx})" ondragend="window.de6(event)" style="opacity:${isP(idx)?'.4':1}" tabindex="0" aria-label="Elemento: ${items6[idx]}, ${isP(idx) ? 'ya colocado' : 'arrastrable'}">${items6[idx]}</div>`).join('');
-  const zones=items6.map((_,i)=>{
-    const pi=placed6[i];
-    if(pi!==null) return `<div class="drop-zone filled" id="z6_${i}" aria-label="Posición ${i+1} ocupada por ${items6[pi]}"><span class="tag" aria-hidden="true">${i+1}</span>${items6[pi]}</div>`;
-    return `<div class="drop-zone" id="z6_${i}" ondragover="window.do6(event)" ondrop="window.dp6(event,${i})" ondragleave="window.dl6(event)" aria-label="Posición ${i+1}, espacio vacío, arrastra un paso aquí"><span class="tag" aria-hidden="true">${i+1}</span> Soltar aquí</div>`;
+  const isPlaced = idx => placed6.includes(idx);
+  
+  // Tarjetas arrastrables (funciona en desktop y móvil con touch)
+  const cards = shuf6.map(idx => `
+    <div class="step-card" 
+         draggable="${!isPlaced(idx)}" 
+         id="c6_${idx}" 
+         ondragstart="window.ds6(event,${idx})" 
+         ondragend="window.de6(event)"
+         ontouchstart="window.ts6(event,${idx})"
+         ontouchmove="window.tm6(event)"
+         ontouchend="window.te6(event,${idx})"
+         style="opacity:${isPlaced(idx) ? '.4' : '1'}; touch-action: none; cursor: ${isPlaced(idx) ? 'default' : 'grab'};"
+         tabindex="0" 
+         aria-label="Elemento: ${items6[idx]}, ${isPlaced(idx) ? 'ya colocado' : 'arrastrable'}">
+      ${items6[idx]}
+    </div>
+  `).join('');
+  
+  // Zonas de destino
+  const zones = items6.map((_, i) => {
+    const pi = placed6[i];
+    if (pi !== null) {
+      return `<div class="drop-zone filled" id="z6_${i}" 
+                    aria-label="Posición ${i + 1} ocupada por ${items6[pi]}"
+                    ontouchstart="window.tzStart(event,${i})">
+                <span class="tag" aria-hidden="true">${i + 1}</span>${items6[pi]}
+              </div>`;
+    }
+    return `<div class="drop-zone" id="z6_${i}" 
+                  ondragover="window.do6(event)" 
+                  ondrop="window.dp6(event,${i})" 
+                  ondragleave="window.dl6(event)"
+                  ontouchstart="window.tzStart(event,${i})"
+                  ontouchend="window.tzEnd(event,${i})"
+                  aria-label="Posición ${i + 1}, espacio vacío, toca para colocar">
+              <span class="tag" aria-hidden="true">${i + 1}</span>
+              <span class="drop-placeholder">⬅ Toca para colocar</span>
+            </div>`;
   }).join('');
   
-  let fb='';
-  let resetBtn='';
+  // Botones de ayuda táctil (solo visibles en móvil)
+  const touchHelp = `
+    <div class="touch-help" style="display: none; text-align: center; margin: 8px 0; padding: 6px; background: #eef2ff; border-radius: 20px; font-size: 11px; color: var(--blue);">
+      💡 Toca un elemento → toca una posición para moverlo
+    </div>
+  `;
   
-  if(window.sceneState.q6done){
-    fb=`<div class="fb ok" role="alert">✓ ¡Excelente! Ordenaste los pasos correctamente.</div>`;
-  } else if(window.sceneState.q6error){
-    fb=`<div class="fb err" role="alert">✗ Orden incorrecto. Puedes reiniciar la actividad para volver a intentarlo.</div>`;
-    resetBtn=`<div style="text-align: center; margin-top: 12px;"><button onclick="window.resetActivity6()" class="btn" style="background: #e62525; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 700;" aria-label="Reiniciar actividad de ordenar pasos">🔄 Reiniciar actividad</button></div>`;
+  let fb = '';
+  let resetBtn = '';
+  
+  if (window.sceneState.q6done) {
+    fb = `<div class="fb ok" role="alert">✓ ¡Excelente! Ordenaste los pasos correctamente.</div>`;
+  } else if (window.sceneState.q6error) {
+    fb = `<div class="fb err" role="alert">✗ Orden incorrecto. Puedes reiniciar la actividad para volver a intentarlo.</div>`;
+    resetBtn = `<div style="text-align: center; margin-top: 12px;">
+                  <button onclick="window.resetActivity6()" 
+                          class="btn" 
+                          style="background: #e62525; color: white; border: none; padding: 10px 24px; border-radius: 40px; cursor: pointer; font-weight: 700; min-height: 44px;"
+                          aria-label="Reiniciar actividad de ordenar pasos">
+                    🔄 Reiniciar actividad
+                  </button>
+                </div>`;
   }
+  
+  // Detectar si es móvil y mostrar ayuda
+  setTimeout(() => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const helpEl = document.querySelector('.touch-help');
+    if (helpEl && isMobile) helpEl.style.display = 'block';
+  }, 100);
   
   return `<div class="scene">
     ${audioBtn()}
+    ${touchHelp}
     <div class="scene-label">Actividad: ordena los pasos del análisis</div>
-    <div class="steps-label">Arrastra cada paso al orden correcto</div>
+    <div class="steps-label">Arrastra o toca cada paso al orden correcto</div>
     <div class="step-grid">${cards}</div>
     <div class="drop-zones">${zones}</div>
     ${fb}
@@ -1134,62 +1193,222 @@ function render6(){
   </div>`;
 }
 
+// === Variables para touch ===
+let touchSelectedItem = null;
+let touchSelectedIndex = null;
+let touchStartX = 0, touchStartY = 0;
+
+// === Eventos táctiles para arrastrar (alternativa touch) ===
+window.ts6 = function(e, idx) {
+  if (placed6 && placed6.includes(idx)) {
+    e.preventDefault();
+    return false;
+  }
+  
+  const touch = e.touches[0];
+  touchStartX = touch.clientX;
+  touchStartY = touch.clientY;
+  
+  touchSelectedItem = e.currentTarget;
+  touchSelectedIndex = idx;
+  
+  // Feedback visual
+  touchSelectedItem.style.opacity = '0.6';
+  touchSelectedItem.style.transform = 'scale(0.98)';
+  
+  // Prevenir scroll mientras se arrastra
+  e.preventDefault();
+}
+
+window.tm6 = function(e) {
+  if (!touchSelectedItem) return;
+  
+  const touch = e.touches[0];
+  const deltaX = Math.abs(touch.clientX - touchStartX);
+  const deltaY = Math.abs(touch.clientY - touchStartY);
+  
+  // Si se movió más de 10px, indicar que está arrastrando
+  if (deltaX > 10 || deltaY > 10) {
+    touchSelectedItem.style.opacity = '0.3';
+    touchSelectedItem.style.transform = 'scale(0.95)';
+  }
+  
+  e.preventDefault();
+}
+
+window.te6 = function(e, idx) {
+  if (!touchSelectedItem) {
+    return;
+  }
+  
+  // Restaurar estilo
+  touchSelectedItem.style.opacity = '';
+  touchSelectedItem.style.transform = '';
+  
+  // Verificar sobre qué zona se soltó
+  const touch = e.changedTouches[0];
+  const elementAtTouch = document.elementFromPoint(touch.clientX, touch.clientY);
+  
+  // Buscar si el elemento o su padre es una drop-zone
+  let dropZone = elementAtTouch;
+  while (dropZone && !dropZone.classList?.contains('drop-zone')) {
+    dropZone = dropZone.parentElement;
+  }
+  
+  if (dropZone && dropZone.classList.contains('drop-zone')) {
+    // Extraer el índice de la zona (formato "z6_X")
+    const zoneId = dropZone.id;
+    if (zoneId && zoneId.startsWith('z6_')) {
+      const zoneIndex = parseInt(zoneId.split('_')[1]);
+      if (!isNaN(zoneIndex)) {
+        window.placeByTouch(zoneIndex, touchSelectedIndex);
+      }
+    }
+  }
+  
+  touchSelectedItem = null;
+  touchSelectedIndex = null;
+  e.preventDefault();
+}
+
+window.tzStart = function(e, zoneIndex) {
+  // Para feedback táctil al tocar una zona
+  const zone = e.currentTarget;
+  zone.style.transform = 'scale(0.99)';
+  zone.style.transition = 'transform 0.1s';
+  setTimeout(() => {
+    if (zone) zone.style.transform = '';
+  }, 150);
+}
+
+window.tzEnd = function(e, zoneIndex) {
+  // Si no hay elemento seleccionado, no hacer nada
+  if (!touchSelectedItem) return;
+  
+  const zone = e.currentTarget;
+  if (zone.classList.contains('drop-zone') && !zone.classList.contains('filled')) {
+    window.placeByTouch(zoneIndex, touchSelectedIndex);
+  }
+  
+  // Limpiar selección
+  if (touchSelectedItem) {
+    touchSelectedItem.style.opacity = '';
+    touchSelectedItem.style.transform = '';
+    touchSelectedItem = null;
+  }
+  touchSelectedIndex = null;
+}
+
+window.placeByTouch = function(zoneIndex, itemIndex) {
+  // Verificar si la zona ya está ocupada
+  if (placed6[zoneIndex] !== null) return;
+  if (placed6.includes(itemIndex)) return;
+  
+  placed6[zoneIndex] = itemIndex;
+  window.sceneState.placed6 = [...placed6];
+  
+  // Verificar si está completo
+  if (placed6.every(v => v !== null)) {
+    const ok = placed6.every((v, i) => v === i);
+    if (ok) {
+      window.sceneState.q6done = true;
+      window.sceneState.q6error = false;
+      dots();
+      
+      // Anunciar éxito
+      const successDiv = document.createElement('div');
+      successDiv.setAttribute('role', 'status');
+      successDiv.textContent = "¡Orden correcto! Bien hecho.";
+      successDiv.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
+      document.body.appendChild(successDiv);
+      setTimeout(() => successDiv.remove(), 3000);
+    } else {
+      window.sceneState.q6error = true;
+      window.sceneState.q6done = false;
+      dots();
+      
+      // Anunciar error
+      const errorDiv = document.createElement('div');
+      errorDiv.setAttribute('role', 'status');
+      errorDiv.textContent = "Orden incorrecto. Puedes reiniciar la actividad.";
+      errorDiv.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
+      document.body.appendChild(errorDiv);
+      setTimeout(() => errorDiv.remove(), 3000);
+    }
+  } else {
+    window.sceneState.q6error = false;
+  }
+  
+  document.getElementById('content').innerHTML = render6();
+}
+
+// === Funciones originales drag & drop (mantenidas para desktop) ===
+window.ds6 = function(e, idx) {
+  if (placed6 && placed6.includes(idx)) {
+    e.preventDefault();
+    return false;
+  }
+  drag6 = idx;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', idx);
+}
+
+window.de6 = function(e) {
+  drag6 = null;
+}
+
+window.do6 = function(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+
+window.dl6 = function(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+window.dp6 = function(e, zi) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('drag-over');
+  if (drag6 === null || (placed6[zi] !== null)) return;
+  if (placed6[zi] !== null) return;
+  
+  placed6[zi] = drag6;
+  window.sceneState.placed6 = [...placed6];
+  
+  if (placed6.every(v => v !== null)) {
+    const ok = placed6.every((v, i) => v === i);
+    if (ok) {
+      window.sceneState.q6done = true;
+      window.sceneState.q6error = false;
+      dots();
+    } else {
+      window.sceneState.q6error = true;
+      window.sceneState.q6done = false;
+      dots();
+    }
+  } else {
+    window.sceneState.q6error = false;
+  }
+  document.getElementById('content').innerHTML = render6();
+}
+
 window.resetActivity6 = function() {
-  // Reiniciar el estado en sceneState
   window.sceneState.placed6 = Array(4).fill(null);
   window.sceneState.q6done = false;
   window.sceneState.q6error = false;
-  
-  // Sincronizar variable global placed6
   placed6 = window.sceneState.placed6;
   drag6 = null;
-  
-  // Refrescar la pantalla
+  touchSelectedItem = null;
+  touchSelectedIndex = null;
   document.getElementById('content').innerHTML = render6();
   
-  // Mostrar mensaje de accesibilidad
   const statusDiv = document.createElement('div');
   statusDiv.setAttribute('role', 'status');
   statusDiv.textContent = "Actividad reiniciada. Puedes volver a ordenar los pasos.";
-  statusDiv.style.position = 'absolute';
-  statusDiv.style.width = '1px';
-  statusDiv.style.height = '1px';
-  statusDiv.style.padding = '0';
-  statusDiv.style.margin = '-1px';
-  statusDiv.style.overflow = 'hidden';
+  statusDiv.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
   document.body.appendChild(statusDiv);
   setTimeout(() => statusDiv.remove(), 3000);
-}
-
-window.ds6 = function(e,idx){ if(placed6 && placed6.includes(idx)) { e.preventDefault(); return false; } drag6=idx; e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain', idx); }
-window.de6 = function(e){ drag6=null; }
-window.do6 = function(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-window.dl6 = function(e){ e.currentTarget.classList.remove('drag-over'); }
-window.dp6 = function(e,zi){
-  e.preventDefault(); 
-  const zone=e.currentTarget; 
-  zone.classList.remove('drag-over');
-  if(drag6===null || (placed6[zi]!==null)) return;
-  if(placed6[zi] !== null) return;
-  
-  placed6[zi]=drag6;
-  window.sceneState.placed6 = [...placed6];  // Guardar en sceneState
-  
-  if(placed6.every(v=>v!==null)){
-    const ok=placed6.every((v,i)=>v===i);
-    if(ok){ 
-      window.sceneState.q6done=true; 
-      window.sceneState.q6error=false; 
-      dots(); 
-    } else { 
-      window.sceneState.q6error=true; 
-      window.sceneState.q6done=false; 
-      dots(); 
-    }
-  } else { 
-    window.sceneState.q6error=false; 
-  }
-  document.getElementById('content').innerHTML=render6();
 }
 
 // Estructura desplegable paso 4
@@ -1203,54 +1422,156 @@ const struct7=[
 function render7(){
   const open=window.sceneState.struct7open||{};
   const items=struct7.map((s,i)=>`
-    <div class="struct-item">
-      <div class="struct-header" onclick="window.toggleStruct7(${i})" tabindex="0" role="button" aria-expanded="${!!open[i]}" aria-label="Expandir o colapsar sección: ${s.title}">
-        <span><span class="tag" aria-hidden="true">${i+1}</span>${s.title}</span><span aria-hidden="true">${open[i]?'▲':'▼'}</span>
+    <div class="struct-item" style="margin-bottom: 10px;">
+      <div class="struct-header" onclick="window.toggleStruct7(${i})" tabindex="0" role="button" aria-expanded="${!!open[i]}" aria-label="Expandir o colapsar sección: ${s.title}" style="padding: 12px 14px; font-size: clamp(13px, 4vw, 14px);">
+        <span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;"><span class="tag" style="font-size: 10px; padding: 3px 8px;" aria-hidden="true">${i+1}</span>${s.title}</span><span aria-hidden="true" style="font-size: 14px;">${open[i]?'▲':'▼'}</span>
       </div>
-      <div class="struct-body${open[i]?' open':''}">${s.body}</div>
+      <div class="struct-body${open[i]?' open':''}" style="padding: 12px 14px; font-size: clamp(12px, 3.8vw, 13px); line-height: 1.5;">
+        ${s.body}
+      </div>
     </div>`).join('');
-  return `<div class="scene">${audioBtn()}<div class="bubble narr"><strong>📋 Paso 4:</strong> Ordena estratégicamente tu análisis. Haz clic en cada sección.</div><div class="struct-list">${items}</div></div>`;
+  
+  return `<div class="scene" style="padding: 16px;">
+    ${audioBtn()}
+    <div class="bubble narr" style="font-size: clamp(12px, 4vw, 14px); padding: 10px 14px; margin-bottom: 12px;">
+      <strong>📋 Paso 4:</strong> Ordena estratégicamente tu análisis. Haz clic en cada sección.
+    </div>
+    <div class="struct-list" style="display: flex; flex-direction: column; gap: 8px;">${items}</div>
+
+  </div>`;
 }
 window.toggleStruct7 = function(i){ if(!window.sceneState.struct7open) window.sceneState.struct7open={}; window.sceneState.struct7open[i]=!window.sceneState.struct7open[i]; document.getElementById('content').innerHTML=render7(); }
 
-// Actividad de emparejar secciones (slide 8)
+// ========== ACTIVIDAD PASO 8 - VERSIÓN ORIGINAL RESTAURADA (con mejoras táctiles mínimas) ==========
+
 function render8(){
   if (!window.sceneState.parejas) window.sceneState.parejas = {1:null,2:null,3:null,4:null,5:null};
+  
   const itemsCorrectos = ["Introducción","Perspectiva teórica/analítica","Análisis del caso","Conclusiones","Bibliografía"];
   const asignadas = Object.values(window.sceneState.parejas).filter(v => v !== null);
   let disponibles = itemsCorrectos.filter(item => !asignadas.includes(item));
-  for (let i = disponibles.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [disponibles[i], disponibles[j]] = [disponibles[j], disponibles[i]]; }
+  
+  // Mezclar disponibles
+  for (let i = disponibles.length - 1; i > 0; i--) { 
+    const j = Math.floor(Math.random() * (i + 1)); 
+    [disponibles[i], disponibles[j]] = [disponibles[j], disponibles[i]]; 
+  }
+  
+  // Columna izquierda - mismo layout original
   const colIzq = [1,2,3,4,5].map(pos => {
     const asignado = window.sceneState.parejas[pos];
     const isFilled = asignado !== null;
-    return `<div style="background: ${isFilled ? '#e6f9f0' : '#f0f5ff'}; border: 2px solid ${isFilled ? 'var(--ok)' : 'var(--blue)'}; border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
-      <div style="display: flex; gap: 12px; align-items:center;"><span style="background: var(--blue); color:white; width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;" aria-hidden="true">${pos}</span><span style="font-weight:600;">${asignado || '_____________'}</span></div>
-      <div>${isFilled ? `<button onclick="window.limpiarSeccionActividad(${pos})" style="background:none;border:1px solid #cbd5e1;border-radius:40px;padding:4px 12px;cursor:pointer;" aria-label="Limpiar sección ${pos}">✗ Limpiar</button>` : (!window.sceneState.q8done ? `<select onchange="window.emparejarSeccionActividad(${pos}, this.value)" style="padding:6px 10px; border-radius:30px; border:2px solid var(--blue);font-weight:500;" aria-label="Seleccionar sección para posición ${pos}"><option value="">Seleccionar...</option>${disponibles.map(item => `<option value="${item}">${item}</option>`).join('')}</select>` : '')}</div>
-    </div>`;
+    
+    if (isFilled) {
+      return `
+        <div style="background: #e6f9f0; border: 2px solid var(--ok); border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span style="background: var(--ok); color: white; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700;" aria-hidden="true">${pos}</span>
+            <span style="font-weight: 600;">${asignado}</span>
+          </div>
+          <div>
+            <button onclick="window.limpiarSeccionActividad(${pos})" 
+                    style="background: none; border: 1px solid #cbd5e1; border-radius: 40px; padding: 6px 12px; cursor: pointer; font-size: 12px; min-height: 38px; min-width: 70px;"
+                    aria-label="Limpiar sección ${pos}">
+              ✗ Limpiar
+            </button>
+          </div>
+        </div>
+      `;
+    } else {
+      // USAMOS <SELECT> NATIVO que funciona perfecto en móvil
+      const options = `<option value="">Seleccionar...</option>` + 
+        disponibles.map(item => `<option value="${item.replace(/"/g, '&quot;')}">${item}</option>`).join('');
+      
+      return `
+        <div style="background: #f0f5ff; border: 2px solid var(--blue); border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <span style="background: var(--blue); color: white; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700;" aria-hidden="true">${pos}</span>
+            <span style="font-weight: 600; color: #64748b;">_____________</span>
+          </div>
+          <select onchange="window.emparejarSeccionActividad(${pos}, this.value)" 
+                  style="padding: 10px 12px; border-radius: 30px; border: 2px solid var(--blue); font-weight: 500; font-size: 13px; background: white; min-width: 180px; min-height: 44px; cursor: pointer;"
+                  aria-label="Seleccionar sección para posición ${pos}">
+            ${options}
+          </select>
+        </div>
+      `;
+    }
   }).join('');
-  const colDer = `<div style="background:#fff8e7;border-radius:16px;padding:16px;border:2px solid var(--yellow);"><div style="font-weight:700;">📋 Secciones disponibles (orden aleatorio):</div><div style="display:flex;flex-direction:column;gap:8px; margin-top:10px;">${disponibles.length>0 ? disponibles.map(item => `<div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:10px;">📌 ${item}</div>`).join('') : '<div style="color:var(--ok);">✓ Todas asignadas</div>'}</div></div>`;
+  
+  // Columna derecha - mismo layout original
+  const colDer = `
+    <div style="background: #fff8e7; border-radius: 16px; padding: 16px; border: 2px solid var(--yellow);">
+      <div style="font-weight: 700; margin-bottom: 12px;">📋 Secciones disponibles (orden aleatorio):</div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        ${disponibles.length > 0 
+          ? disponibles.map(item => `<div style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px;">📌 ${item}</div>`).join('') 
+          : '<div style="color: var(--ok);">✓ Todas asignadas</div>'
+        }
+      </div>
+    </div>
+  `;
   
   let errorMsg = '';
   let resetBtn = '';
   
-  if(window.sceneState.errorParejas) {
-    errorMsg = `<div class="fb err" role="alert">✗ El orden no es correcto. Recuerda: Introducción → Perspectiva teórica → Análisis → Conclusiones → Bibliografía.</div>`;
-    resetBtn = `<div style="text-align: center; margin-top: 12px;"><button onclick="window.resetActivity8()" class="btn" style="background: #e62525; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 700;" aria-label="Reiniciar actividad de emparejar secciones">🔄 Reiniciar actividad</button></div>`;
+  if(window.sceneState.errorParejas && !window.sceneState.q8done) {
+    errorMsg = `
+      <div class="fb err" role="alert" style="margin-bottom: 12px;">
+        ✗ El orden no es correcto. Recuerda: Introducción → Perspectiva teórica → Análisis → Conclusiones → Bibliografía.
+      </div>
+    `;
+    resetBtn = `
+      <div style="text-align: center; margin-top: 8px;">
+        <button onclick="window.resetActivity8()" 
+                class="btn" 
+                style="background: #e62525; color: white; border: none; padding: 8px 20px; border-radius: 40px; cursor: pointer; font-weight: 700;"
+                aria-label="Reiniciar actividad de emparejar secciones">
+          🔄 Reiniciar actividad
+        </button>
+      </div>
+    `;
   }
   
-  const successMsg = window.sceneState.q8done ? `<div class="fb ok" role="alert">✓ ¡Perfecto! Has ordenado correctamente las 5 secciones.</div>` : '';
+  const successMsg = window.sceneState.q8done 
+    ? `<div class="fb ok" role="alert" style="margin-bottom: 12px;">✓ ¡Perfecto! Has ordenado correctamente las 5 secciones.</div>` 
+    : '';
   
-  return `<div class="scene">${audioBtn()}<div class="scene-label">Actividad: arma la estructura del análisis</div><div class="bubble narr">🎯 Asigna cada sección a la posición correcta (1 a 5).</div>${errorMsg}${successMsg}${resetBtn}<div class="step-grid" style="grid-template-columns:1fr 0.9fr; gap:16px;"><div><div style="font-weight:700;">📌 Orden correcto:</div>${colIzq}</div><div>${colDer}</div></div></div>`;
+  // Mismo layout original
+  return `
+    <div class="scene">
+      ${audioBtn()}
+      <div class="scene-label">Actividad: arma la estructura del análisis</div>
+      <div class="bubble narr">🎯 Asigna cada sección a la posición correcta (1 a 5).</div>
+      ${errorMsg}
+      ${successMsg}
+      ${resetBtn}
+      <div class="step-grid" style="grid-template-columns: 1fr 0.9fr; gap: 16px;">
+        <div>
+          <div style="font-weight: 700;">📌 Orden correcto:</div>
+          ${colIzq}
+        </div>
+        <div>${colDer}</div>
+      </div>
+    </div>
+  `;
 }
 
+// Funciones auxiliares (igual que original)
 window.emparejarSeccionActividad = function(posicion, item) {
   if (window.sceneState.q8done) return;
+  if (!item) return;
   if (!window.sceneState.parejas) window.sceneState.parejas = {1:null,2:null,3:null,4:null,5:null};
   window.sceneState.parejas[posicion] = item;
+  
   const completo = Object.values(window.sceneState.parejas).every(v => v !== null);
   if (completo) {
     const itemsCorrectos = ["Introducción","Perspectiva teórica/analítica","Análisis del caso","Conclusiones","Bibliografía"];
-    const correcto = window.sceneState.parejas[1] === itemsCorrectos[0] && window.sceneState.parejas[2] === itemsCorrectos[1] && window.sceneState.parejas[3] === itemsCorrectos[2] && window.sceneState.parejas[4] === itemsCorrectos[3] && window.sceneState.parejas[5] === itemsCorrectos[4];
+    const correcto = window.sceneState.parejas[1] === itemsCorrectos[0] && 
+                     window.sceneState.parejas[2] === itemsCorrectos[1] && 
+                     window.sceneState.parejas[3] === itemsCorrectos[2] && 
+                     window.sceneState.parejas[4] === itemsCorrectos[3] && 
+                     window.sceneState.parejas[5] === itemsCorrectos[4];
     if (correcto) { 
       window.sceneState.q8done = true; 
       dots(); 
@@ -1261,24 +1582,19 @@ window.emparejarSeccionActividad = function(posicion, item) {
   document.getElementById('content').innerHTML = render8();
 }
 
-window.limpiarSeccionActividad = function(posicion){ if(!window.sceneState.q8done && window.sceneState.parejas){ window.sceneState.parejas[posicion]=null; document.getElementById('content').innerHTML=render8(); } }
+window.limpiarSeccionActividad = function(posicion) {
+  if (!window.sceneState.q8done && window.sceneState.parejas) {
+    window.sceneState.parejas[posicion] = null;
+    if (window.sceneState.errorParejas) window.sceneState.errorParejas = false;
+    document.getElementById('content').innerHTML = render8();
+  }
+}
 
 window.resetActivity8 = function() {
-  window.sceneState.parejas = {1:null, 2:null, 3:null, 4:null, 5:null};
+  window.sceneState.parejas = {1: null, 2: null, 3: null, 4: null, 5: null};
   window.sceneState.q8done = false;
   window.sceneState.errorParejas = false;
   document.getElementById('content').innerHTML = render8();
-  const statusDiv = document.createElement('div');
-  statusDiv.setAttribute('role', 'status');
-  statusDiv.textContent = "Actividad reiniciada. Puedes volver a emparejar las secciones.";
-  statusDiv.style.position = 'absolute';
-  statusDiv.style.width = '1px';
-  statusDiv.style.height = '1px';
-  statusDiv.style.padding = '0';
-  statusDiv.style.margin = '-1px';
-  statusDiv.style.overflow = 'hidden';
-  document.body.appendChild(statusDiv);
-  setTimeout(() => statusDiv.remove(), 3000);
 }
 
 function render9(){
@@ -1307,7 +1623,7 @@ function render9(){
       <div class="bubble p1" style="background: var(--blue); flex: 1; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <span>📖 No olvides revisar que el listado de referencias utilice la norma <strong>APA 7ª edición</strong>.</span>
         <button onclick="window.toggleAPAReminder()" style="background: white; border: none; border-radius: 40px; padding: 6px 16px; font-size: 11px; font-weight: 700; color: var(--blue); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.1);" aria-label="${showAPA ? 'Ocultar formato APA' : 'Ver formato APA'}">
-          ${showAPA ? 'Ocultar formato' : 'Ver formato APA'}
+          ${showAPA ? 'Ocultar formato APA' : 'Ver formato APA'}
         </button>
       </div>
     </div>
@@ -1410,7 +1726,9 @@ window.toggleChecklist = function(item) {
   setTimeout(() => statusDiv.remove(), 3000);
 }
 
-function render9dot5(){
+// ========== ACTIVIDAD PASO 10 (índice 9) - VERSIÓN MEJORADA PARA MÓVIL ==========
+
+function render9dot5() {
   if (!window.sceneState.apaFillBlanks) {
     const baseReference = "González, M. (2022). _________. Revista de Innovación Educativa, _________(3), 45-62. _________";
     const missingItems = [
@@ -1438,7 +1756,6 @@ function render9dot5(){
   const completed = state.completed || false;
   const showFeedback = state.showFeedback || false;
   const isCorrect = state.isCorrect || false;
-  
   const allFilled = state.droppedPositions.every(pos => pos !== null);
   
   let filledReference = state.baseReference;
@@ -1449,24 +1766,35 @@ function render9dot5(){
     }
   });
   
+  // Determinar si es móvil para mostrar ayuda
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const touchHelp = isMobile ? `
+    <div style="background: #eef2ff; border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; text-align: center; font-size: 11px; color: var(--blue);">
+      💡 <strong>Modo táctil:</strong> Toca un elemento → toca un espacio para colocarlo
+    </div>
+  ` : '';
+  
   return `<div class="scene" style="width: 100%; overflow-x: hidden; padding: 16px;">
     ${audioBtn()}
+    ${touchHelp}
     <div class="scene-label" style="margin-bottom: 8px;">📚 Completa la referencia APA</div>
     <div class="bubble narr" style="font-size: 11px; padding: 6px 10px; margin-bottom: 8px;">
-      <strong>🎯 Arrastra</strong> los elementos a los espacios en blanco
+      <strong>🎯 Arrastra o toca</strong> los elementos a los espacios en blanco
     </div>
     
-    <div style="background: #f0f5ff; border-radius: 10px; padding: 8px 10px; margin-bottom: 12px; border-left: 3px solid var(--blue); font-size: 10px; font-family: monospace; line-height: 1.4;">
+    <!-- Referencia con espacios -->
+    <div style="background: #f0f5ff; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; border-left: 3px solid var(--blue); font-size: 10px; font-family: monospace; line-height: 1.5; overflow-x: auto;">
       ${filledReference.split('_________').map((part, idx, arr) => {
         if (idx === arr.length - 1) return part;
         const droppedItem = state.droppedPositions[idx];
-        return part + `<span style="display: inline-block; background: ${droppedItem ? '#e6f9f0' : '#fff3cd'}; border: 1px solid ${droppedItem ? 'var(--ok)' : '#ffc107'}; border-radius: 4px; padding: 1px 4px; margin: 0 1px; font-weight: 600;">${droppedItem ? droppedItem.value : '_____'}</span>`;
+        return part + `<span style="display: inline-block; background: ${droppedItem ? '#e6f9f0' : '#fff3cd'}; border: 1px solid ${droppedItem ? 'var(--ok)' : '#ffc107'}; border-radius: 4px; padding: 2px 6px; margin: 0 2px; font-weight: 600; font-size: 10px;">${droppedItem ? droppedItem.value.length > 20 ? droppedItem.value.substring(0, 18) + '…' : droppedItem.value : '_____'}</span>`;
       }).join('')}
     </div>
     
-    <div style="background: white; border-radius: 10px; padding: 6px 8px; border: 1px solid var(--blue); margin-bottom: 10px;">
-      <div style="font-weight: 600; font-size: 9px; margin-bottom: 6px; text-align: center; color: var(--blue);">📌 Coloca aquí:</div>
-      <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+    <!-- Zonas de destino (mejoradas para móvil) -->
+    <div style="background: white; border-radius: 12px; padding: 10px 8px; border: 1px solid var(--blue); margin-bottom: 12px;">
+      <div style="font-weight: 600; font-size: 10px; margin-bottom: 8px; text-align: center; color: var(--blue);">📌 Espacios para colocar (toca para llenar):</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
         ${state.missingItems.map((item, idx) => {
           const droppedItem = state.droppedPositions[idx];
           return `
@@ -1474,21 +1802,27 @@ function render9dot5(){
                  class="drop-zone-blank" 
                  ondragover="window.onDragOverBlank(event)" 
                  ondrop="window.onDropBlank(event, ${idx})"
-                 style="flex: 1; min-width: 70px; background: ${droppedItem ? '#e6f9f0' : '#f8fafc'}; border: 1px dashed ${droppedItem ? 'var(--ok)' : '#94a3b8'}; border-radius: 8px; padding: 6px 4px; text-align: center;"
+                 ontouchstart="window.onTouchBlankStart(event, ${idx})"
+                 style="flex: 1; min-width: 80px; background: ${droppedItem ? '#e6f9f0' : '#f8fafc'}; border: 2px solid ${droppedItem ? 'var(--ok)' : '#94a3b8'}; border-radius: 12px; padding: 10px 6px; text-align: center; cursor: pointer; min-height: 60px;"
                  aria-label="Espacio para colocar elemento ${idx + 1}">
               ${droppedItem ? `
-                <div style="font-size: 9px; font-weight: 600;">${droppedItem.value.length > 15 ? droppedItem.value.substring(0, 12) + '...' : droppedItem.value}</div>
-                <button onclick="window.clearBlankPosition(${idx})" style="background: none; border: none; font-size: 9px; color: #999; cursor: pointer; margin-top: 2px;" aria-label="Limpiar espacio ${idx + 1}">✗</button>
-              ` : `<div style="color: #aaa; font-size: 9px;">⬅ Espacio ${idx + 1}</div>`}
+                <div style="font-size: 10px; font-weight: 600; word-break: break-word;">${droppedItem.value.length > 25 ? droppedItem.value.substring(0, 22) + '…' : droppedItem.value}</div>
+                <button onclick="window.clearBlankPosition(${idx}); event.stopPropagation();" 
+                        style="background: none; border: none; font-size: 10px; color: #e62525; cursor: pointer; margin-top: 6px; padding: 4px 8px;"
+                        aria-label="Limpiar espacio ${idx + 1}">
+                  ✗ Limpiar
+                </button>
+              ` : `<div style="color: #aaa; font-size: 11px;">⬅ Espacio ${idx + 1}</div>`}
             </div>
           `;
         }).join('')}
       </div>
     </div>
     
-    <div style="background: #fef9e3; border-radius: 10px; padding: 6px 8px; border: 1px solid var(--yellow); margin-bottom: 10px;">
-      <div style="font-weight: 600; font-size: 9px; margin-bottom: 6px; text-align: center; color: var(--yellow);">🎴 Arrastra:</div>
-      <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;">
+    <!-- Elementos arrastrables (mejorados para móvil) -->
+    <div style="background: #fef9e3; border-radius: 12px; padding: 10px 8px; border: 1px solid var(--yellow); margin-bottom: 12px;">
+      <div style="font-weight: 600; font-size: 10px; margin-bottom: 8px; text-align: center; color: var(--yellow);">🎴 Elementos disponibles (toca para seleccionar):</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
         ${state.availableItems.map((item, idx) => {
           const isAlreadyPlaced = state.droppedPositions.some(pos => pos && pos.id === item.id);
           if (isAlreadyPlaced) return '';
@@ -1497,34 +1831,150 @@ function render9dot5(){
                  draggable="true" 
                  ondragstart="window.onDragStartBlank(event, '${item.id}')" 
                  ondragend="window.onDragEndBlank(event)"
-                 style="background: var(--yellow); border-radius: 8px; padding: 4px 10px; cursor: grab; user-select: none; font-size: 10px; font-weight: 500; text-align: center;"
-                 aria-label="Elemento arrastrable: ${item.value.length > 20 ? item.value.substring(0, 18) + '...' : item.value}">
-              ${item.value.length > 20 ? item.value.substring(0, 18) + '...' : item.value}
+                 ontouchstart="window.onTouchSelectItem(event, '${item.id}')"
+                 style="background: var(--yellow); border-radius: 30px; padding: 8px 16px; cursor: pointer; user-select: none; font-size: 12px; font-weight: 500; text-align: center; min-height: 44px; display: inline-flex; align-items: center; touch-action: manipulation;"
+                 aria-label="Elemento seleccionable: ${item.value.length > 30 ? item.value.substring(0, 28) + '…' : item.value}">
+              📦 ${item.value.length > 28 ? item.value.substring(0, 25) + '…' : item.value}
             </div>
           `;
         }).join('')}
+        ${state.availableItems.length === 0 ? '<div style="color: var(--ok); font-size: 12px; padding: 8px;">✓ Todos los elementos colocados</div>' : ''}
       </div>
     </div>
     
-    <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 8px;">
-      <button onclick="window.checkFillBlanks()" class="btn btn-main" ${!allFilled ? 'disabled' : ''} style="padding: 4px 14px; font-size: 10px; ${!allFilled ? 'opacity: 0.5;' : ''}" aria-label="Verificar respuesta">✓ Verificar</button>
-      <button onclick="window.resetFillBlanks()" class="btn btn-back" style="padding: 4px 14px; font-size: 10px;" aria-label="Reiniciar actividad">⟳ Reiniciar</button>
+    <!-- Botones de acción -->
+    <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 12px;">
+      <button onclick="window.checkFillBlanks()" class="btn btn-main" ${!allFilled ? 'disabled' : ''} style="padding: 10px 20px; font-size: 13px; min-height: 44px; ${!allFilled ? 'opacity: 0.5;' : ''}" aria-label="Verificar respuesta">✓ Verificar</button>
+      <button onclick="window.resetFillBlanks()" class="btn btn-back" style="padding: 10px 20px; font-size: 13px; min-height: 44px;" aria-label="Reiniciar actividad">⟳ Reiniciar</button>
     </div>
     
     ${showFeedback ? `
-    <div class="fb ${isCorrect ? 'ok' : 'err'}" role="alert" style="font-size: 10px; padding: 6px;">
+    <div class="fb ${isCorrect ? 'ok' : 'err'}" role="alert" style="font-size: 12px; padding: 10px;">
       ${isCorrect ? '🎉 ¡Correcto! ✅' : '❌ Revisa el orden: Título → Volumen → DOI'}
     </div>
     ` : ''}
     
     ${completed ? `
-    <div class="bubble ok" style="background: #e6f9f0; color: var(--ok); text-align: center; margin-top: 4px; font-size: 9px; padding: 4px;" role="status">
-      🎓 ¡Completado! Continúa.
+    <div class="bubble ok" style="background: #e6f9f0; color: var(--ok); text-align: center; margin-top: 8px; font-size: 12px; padding: 10px;" role="status">
+      🎓 ¡Completado! Puedes continuar.
     </div>
     ` : ''}
   </div>`;
 }
 
+// === Variables para selección táctil ===
+let touchSelectedItemId = null;
+
+// === Funciones táctiles para móvil ===
+window.onTouchSelectItem = function(event, itemId) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  // Si ya hay un elemento seleccionado, limpiar visual
+  if (touchSelectedItemId) {
+    // Restaurar estilo del elemento anterior
+    const prevElements = document.querySelectorAll('[data-selected="true"]');
+    prevElements.forEach(el => {
+      el.style.background = '';
+      el.style.transform = '';
+      el.removeAttribute('data-selected');
+    });
+  }
+  
+  touchSelectedItemId = itemId;
+  
+  // Feedback visual del elemento seleccionado
+  const element = event.currentTarget;
+  element.style.background = '#d4a000';
+  element.style.transform = 'scale(0.98)';
+  element.setAttribute('data-selected', 'true');
+  
+  // Anunciar selección para lectores de pantalla
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.textContent = `Elemento seleccionado. Toca un espacio para colocarlo.`;
+  announcement.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
+  document.body.appendChild(announcement);
+  setTimeout(() => announcement.remove(), 2000);
+  
+  // Auto limpiar después de 5 segundos si no se usa
+  setTimeout(() => {
+    if (touchSelectedItemId === itemId) {
+      const elements = document.querySelectorAll('[data-selected="true"]');
+      elements.forEach(el => {
+        el.style.background = '';
+        el.style.transform = '';
+        el.removeAttribute('data-selected');
+      });
+      if (touchSelectedItemId === itemId) touchSelectedItemId = null;
+    }
+  }, 5000);
+}
+
+window.onTouchBlankStart = function(event, positionIndex) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  if (!touchSelectedItemId) {
+    // Anunciar que no hay elemento seleccionado
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.textContent = `Primero toca un elemento de la sección amarilla.`;
+    announcement.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
+    document.body.appendChild(announcement);
+    setTimeout(() => announcement.remove(), 2000);
+    return;
+  }
+  
+  const state = window.sceneState.apaFillBlanks;
+  if (!state) return;
+  
+  // Buscar el elemento seleccionado en availableItems
+  const draggedItemIndex = state.availableItems.findIndex(item => item.id === touchSelectedItemId);
+  if (draggedItemIndex === -1) {
+    // El elemento ya fue colocado, limpiar selección
+    touchSelectedItemId = null;
+    return;
+  }
+  
+  const draggedItem = state.availableItems[draggedItemIndex];
+  
+  // Verificar si el espacio ya está ocupado
+  if (state.droppedPositions[positionIndex] !== null) {
+    const announcement = document.createElement('div');
+    announcement.setAttribute('role', 'status');
+    announcement.textContent = `Este espacio ya está ocupado. Usa el botón "Limpiar" si quieres cambiarlo.`;
+    announcement.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
+    document.body.appendChild(announcement);
+    setTimeout(() => announcement.remove(), 2000);
+    return;
+  }
+  
+  // Colocar el elemento
+  state.droppedPositions[positionIndex] = draggedItem;
+  state.availableItems.splice(draggedItemIndex, 1);
+  
+  // Limpiar selección
+  const selectedElements = document.querySelectorAll('[data-selected="true"]');
+  selectedElements.forEach(el => {
+    el.style.background = '';
+    el.style.transform = '';
+    el.removeAttribute('data-selected');
+  });
+  touchSelectedItemId = null;
+  
+  // Anunciar colocación
+  const announcement = document.createElement('div');
+  announcement.setAttribute('role', 'status');
+  announcement.textContent = `Elemento colocado en el espacio ${positionIndex + 1}.`;
+  announcement.style.cssText = 'position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;';
+  document.body.appendChild(announcement);
+  setTimeout(() => announcement.remove(), 2000);
+  
+  document.getElementById('content').innerHTML = render9dot5();
+}
+
+// === Funciones drag & drop originales (mantenidas para desktop) ===
 let draggedBlankItemId = null;
 
 window.onDragStartBlank = function(event, itemId) {
@@ -1578,6 +2028,17 @@ window.clearBlankPosition = function(positionIndex) {
   state.droppedPositions[positionIndex] = null;
   state.availableItems.push(removedItem);
   
+  // Limpiar selección si estaba seleccionado
+  if (touchSelectedItemId === removedItem.id) {
+    touchSelectedItemId = null;
+    const selectedElements = document.querySelectorAll('[data-selected="true"]');
+    selectedElements.forEach(el => {
+      el.style.background = '';
+      el.style.transform = '';
+      el.removeAttribute('data-selected');
+    });
+  }
+  
   document.getElementById('content').innerHTML = render9dot5();
 }
 
@@ -1601,6 +2062,33 @@ window.checkFillBlanks = function() {
   if (correct) {
     state.completed = true;
   }
+  document.getElementById('content').innerHTML = render9dot5();
+}
+
+window.resetFillBlanks = function() {
+  const state = window.sceneState.apaFillBlanks;
+  if (!state) return;
+  
+  const newShuffled = [...state.missingItems];
+  for (let i = newShuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newShuffled[i], newShuffled[j]] = [newShuffled[j], newShuffled[i]];
+  }
+  state.availableItems = newShuffled;
+  state.droppedPositions = [null, null, null];
+  state.completed = false;
+  state.showFeedback = false;
+  state.isCorrect = false;
+  
+  // Limpiar selección táctil
+  touchSelectedItemId = null;
+  const selectedElements = document.querySelectorAll('[data-selected="true"]');
+  selectedElements.forEach(el => {
+    el.style.background = '';
+    el.style.transform = '';
+    el.removeAttribute('data-selected');
+  });
+  
   document.getElementById('content').innerHTML = render9dot5();
 }
 
